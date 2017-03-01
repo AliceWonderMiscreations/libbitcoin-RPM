@@ -147,28 +147,3 @@ Build the dependencies in the following order:
 * `compat-libpng`
 * `compat-qrencode-libs`
 * `compat-zeromq`
-
-### LibreOffice Build Order
-
-If LibreOffice is on your system and needs to be rebuilt for the newer boost
-library, make sure `compat-icu` and `boost` are rebuilt first. Then build in
-the following order:
-
-* `libcmis`
-* `mdds`
-* `libixion`
-* `liborcus`
-* `libstaroffice`
-* `libwps`
-* `libzmf`
-* `libe-book`
-
-Use the source RPM from Fedora Rawhide for the above packages. They should
-build just fine in CentOS 7 when built in that order.
-
-Then you can build LibreOffice packages that link and the newer boost packages
-and the newer ICU packages.
-
-Start with the source RPM from Fedora Rawhide to get the source tarball and
-patches. Then replace the RPM spec file with the LibreOffice spec file that
-is provided here.
