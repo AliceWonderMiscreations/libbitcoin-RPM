@@ -10,35 +10,51 @@ The libbitcoin website is [https://libbitcoin.org/](https://libbitcoin.org/).
 
 Their project on GitHub is [https://github.com/libbitcoin](https://github.com/libbitcoin).
 
-## Public Domain
-No license is required to use the RPM spec files provided here. I consider the
+## YUM repository
+If you just want the RPM packages for CentOS 7, please visit the yum repository
+I created for that. Well, it is not live yet, but soon will be. When it is live
+there will be a link here.
+
+If you want to build the RPM packages yourself, read on.
+
+## CC0 Public Domain
+No license is required to use the RPM spec files I created here. I consider the
 RPM spec files to be Public Domain. See [Creative Commons CC0](https://wiki.creativecommons.org/wiki/CC0).
 
 However please note that it is considered bad form to remove RPM spec file
-changelog entries. If you do so, though, there are no legal ramifications. I just might
-cry if I find out.
+`changelog` entries. If you do so, though, there are no legal ramifications. I
+just might cry if I find out, that is all.
 
 Please note that the Public Domain nature only applies to RPM spec files that
-I wrote from scratch (all of the libbitcoin spec files). For many of the RPM
-spec files, I started with RPM spec files provided by CentOS, EPEL, or Fedora.
+I wrote from scratch (all of the libbitcoin spec files). For many of the other
+RPM spec files, I started with RPM spec files provided by CentOS, EPEL, or
+Fedora.
 
-Obviously I can not apply the CC0 public domain license to those. The license
-for the software packaged applies to those unless the people who originally
-wrote those spec files applied a different one.
+Obviously I can not apply the CC0 public domain license to those. For RPM
+spec files here where `Alice Wonder` is not the oldest entry in the `changelog`
+you should assume the same license applies to the spec file that also applies
+to the software being packaged by the spec file.
 
 Also please note that the CC0 public domain license I apply to the RPM spec
 files I did write from scratch only applies to the spec files themselves, and
 not to the software that the spec files create packages for.
 
+I just like my spec files to be CC0 so that no one has to ask me to re-use them
+for whatever purpose they want. They can.
+
 ## Spec File Target
 I am targeting CentOS 7 with EPEL for some dependencies with these RPM spec
 files. What that means is that they should build in [mock](https://github.com/rpm-software-management/mock/)
 configured to use the CentOS 7 base, updates, and EPEL repositories for any
-build dependencies.
+build dependencies that are not part of this spec file collection.
 
 I also *hope* that these RPM spec files will build in Fedora Rawhide and/or the
 current stable release of Fedora, however I do not run a Fedora system and I
 have no desire to set up a Fedora mock buildroot to find out.
+
+Fedora 25 may need some of the same type of special handling that CentOS 7
+requires, but I *think* Fedora 26 (current Rawhide) has new enough packages for
+the various libbitcoin dependencies.
 
 ## BOOST and ICU
 
@@ -52,9 +68,11 @@ that will allow shared libraries for both versions to be installed at the same
 time. This way, the CentOS 7 `libicu` package can be left alone.
 
 In the case of boost, however, not very many packages on my systems actually
-use the boost library, so I decided the best thing to do was simply to update
-the system boost (using the Fedora 26 Rawhide source RPM) and rebuild the RPM
-packages from CentOS 7 and EPEL that I use that did link against boost.
+use the boost library. Most of my servers did not even have boost installed.
+
+Thus I decided the best thing to do was simply to update the system boost
+(using the Fedora 26 Rawhide source RPM) and rebuild the RPM packages from
+CentOS 7 and EPEL that I use that did link against boost.
 
 On recent Fedora systems, that should not be an issue, your version of boost
 should already be new enough. However if you are on a CentOS 7 system and you
@@ -66,43 +84,91 @@ You do not have to agree with my decision to replace the CentOS 7 provided
 boost packaging, the beauty of open source is you can choose to do that part
 differently.
 
-### LibreOffice
+### Packages that Depend On Boost
 
-*This is something only CentOS 7 users need to worry about. Fedora users do not
-need to update boost and therefore do not need to rebuild LibreOffice.*
+_Fedora users should not have to worry about this section_
 
-It is my suspicion that most people wanting libbitcoin want it for a server
-where LibreOffice is not installed. If you use it on the desktop, however,
-LibreOffice is one of the packages where the CentOS 7 version links against
-boost and has to be rebuilt to upgrade the CentOS 7 provided boost to a newer
-version.
+If you have a desktop environment installed it is quite likely you have a small
+number of packages on your system that are linked against the boost libraries.
 
-I did not just rebuild the CentOS 7 LibreOffice, I decided to update to the
-version provided by Fedora Rawhide.
+You can find out what they are with the following command:
 
-The RPM spec file from Rawhide that I started from had macros to do some things
-differently when building on RHEL/CentOS 7. I did not like all of those
-differences.
+    rpm -qa --queryformat "%{name} \n" |grep "^boost" \
+      |while read line; do
+        rpm --test -e "${line}" >> boost-dependant.txt 2>&1
+      done
 
-For example, many of the build dependencies are not packaged for CentOS so what
-the spec file does in those cases is bundle the source for those dependencies
-and build them before building LibreOffice, using those libraries within
-LibreOffice.
+The resulting file `boost-dependant.txt` will help you understand what packages
+currently on your system are linked against the version of boost that CentOS 7
+ships with.
 
-I chose instead to build those dependencies as separate packages the same way
-they are done in Fedora. That way if there is a bug fix to one of those
-shared libraries, I can simply update the dependency and do not have to rebuild
-all of LibreOffice just to get the bug fix.
+You will need to rebuild those packages against the newer boost.
 
-I also build LibreOffice against the newer version of ICU. As LibreOffice links
-against boost and I build the newer boost against the newer ICU, it made sense
-to also build LibreOffice against the newer ICU even though it is not strictly
-necessary.
+The source RPM for those packages will rebuild against the newer boost without
+any issues with two exceptions:
 
-Please note that building LibreOffice takes a long time and takes a lot of
-space. I noticed the build goes a lot faster if you have an SSD dedicated for
-the mock build root. It also helps to have a good CPU, e.g. a quad code Xeon
-with hyper-threading, the build will utilize all 8 threads and it will build
-significantly faster than on something like an i5 where only four threads are
-available. With 16 GB of memory, building LibreOffice peak memory usage was
-at about 75% of available.
+* harfbuzz
+* LibreOffice
+
+The `harfbuzz` package actually does build fine against the newer boost, but
+that package also builds against ICU and I reccomend building it against the
+newer version of ICU provided here.
+
+If harfbuzz is installed on your system, I recommend rebuilding it using the
+RPM spec file provided here.
+
+For LibreOffice, please see the [LibreOffice](./LibreOffice.md) file.
+
+
+## Other Compat Packages
+
+*Fedora users __probably__ do not need to worry about this.*
+
+In addition to boost and ICU there are a few other build dependencies where the
+version in CentOS 7 is not new enough. For example, the libpng library and the
+zeromq library.
+
+In those cases I have spec files for compatability packages that allow the
+shared library for the needed version to be installed in parallel with the
+shared libeary that CentOS ships with.
+
+## Dependency Build Order
+
+CentOS 7 users will need to create a package repository where the dependencies
+can be made available to the mock build system.
+
+The mock build system should also have access to packages in CentOS 7 base,
+CentOS 7 updates, and EPEL for CentOS 7.
+
+Build the dependencies in the following order:
+
+* `compat-icu`
+* `boost`
+* `compat-libpng`
+* `compat-qrencode-libs`
+* `compat-zeromq`
+
+### LibreOffice Build Order
+
+If LibreOffice is on your system and needs to be rebuilt for the newer boost
+library, make sure `compat-icu` and `boost` are rebuilt first. Then build in
+the following order:
+
+* `libcmis`
+* `mdds`
+* `libixion`
+* `liborcus`
+* `libstaroffice`
+* `libwps`
+* `libzmf`
+* `libe-book`
+
+Use the source RPM from Fedora Rawhide for the above packages. They should
+build just fine in CentOS 7 when built in that order.
+
+Then you can build LibreOffice packages that link and the newer boost packages
+and the newer ICU packages.
+
+Start with the source RPM from Fedora Rawhide to get the source tarball and
+patches. Then replace the RPM spec file with the LibreOffice spec file that
+is provided here.
