@@ -60,13 +60,13 @@ With the exception of `harfbuzz`, just use the source RPM from Fedora Rawhide
 for the above packages. They should build just fine in CentOS 7 when built in
 that order.
 
-For `harfbuzz` you should start with the Source RPM from [CentOS 7](http://vault.centos.org/7.3.1611/)
-(currently in `os/Source/` but always check in `updates/Source/SPackages/` for
-an updated source package) but use the RPM spec file supplied here.
+For `harfbuzz` you should use the RPM spec file provided here. The spec file
+provided here started life in the Fedora Rawhide world but had been modified
+to build against the `compat-icu` package on RHEL/CentOS systems.
 
-Then you can build LibreOffice packages that link and the newer boost packages
-and the newer ICU packages.
+Once those dependencies are built you can build LibreOffice packages that link
+against the newer boost packages and the newer ICU packages.
 
 For LibreOffice, start with the source RPM from Fedora Rawhide to get the
-source tarball and patches. Then replace the RPM spec file with the LibreOffice
-spec file that is provided here.
+source tarball and patches (there are a lot). Then replace the RPM spec file
+with the LibreOffice spec file that is provided here.

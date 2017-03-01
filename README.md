@@ -15,7 +15,9 @@ If you just want the RPM packages for CentOS 7, please visit the yum repository
 I created for that. Well, it is not live yet, but soon will be. When it is live
 there will be a link here.
 
-If you want to build the RPM packages yourself, read on.
+If you want to build the RPM packages yourself, read on. You need to already
+familiar with how to use the [mock](https://github.com/rpm-software-management/mock/)
+build system.
 
 ## CC0 Public Domain
 No license is required to use the RPM spec files I created here. I consider the
@@ -44,9 +46,9 @@ for whatever purpose they want. They can.
 
 ## Spec File Target
 I am targeting CentOS 7 with EPEL for some dependencies with these RPM spec
-files. What that means is that they should build in [mock](https://github.com/rpm-software-management/mock/)
-configured to use the CentOS 7 base, updates, and EPEL repositories for any
-build dependencies that are not part of this spec file collection.
+files. What that means is that they should build in mock configured to use the
+CentOS 7 base, updates, and EPEL repositories for any build dependencies that
+are not part of this spec file collection.
 
 I also *hope* that these RPM spec files will build in Fedora Rawhide and/or the
 current stable release of Fedora, however I do not run a Fedora system and I
