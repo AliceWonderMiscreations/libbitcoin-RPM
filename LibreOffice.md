@@ -60,6 +60,9 @@ With the exception of `harfbuzz`, just use the source RPM from Fedora Rawhide
 for the above packages. They should build just fine in CentOS 7 when built in
 that order.
 
+You can find rawhide source packages at the [Fedora Packages Search](https://apps.fedoraproject.org/packages/)
+site.
+
 For `harfbuzz` you should use the RPM spec file provided here. The spec file
 provided here started life in the Fedora Rawhide world but has been modified
 to build against the `compat-icu` package on RHEL/CentOS systems.

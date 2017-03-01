@@ -143,8 +143,11 @@ For LibreOffice, please see the [LibreOffice](./LibreOffice.md) file.
 *Fedora users __probably__ do not need to worry about this.*
 
 In addition to boost and ICU there are a few other build dependencies where the
-version in CentOS 7 is not new enough. For example, the libpng library and the
-zeromq library.
+version in CentOS 7 is not new enough:
+
+* libpng
+* qrencode
+* zeromq
 
 In those cases I have spec files for compatability packages that allow the
 shared library for the needed version to be installed in parallel with the
@@ -163,5 +166,5 @@ Build the dependencies in the following order:
 * `compat-icu`
 * `boost`
 * `compat-libpng`
-* `compat-qrencode-libs`
+* `compat-qrencode`
 * `compat-zeromq`
