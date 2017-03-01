@@ -208,3 +208,16 @@ the source.
 You also will need to change the define `gitdate` macro in the RPM spec file to
 reflect the `YYYYMMDD` when you downloaded the zip archive. Do not forget to
 make a changelog entry reflecting the date you grabbed the zip archive.
+
+## libbitcoin-libsecp256k1.spec
+
+secp256k1 is not part of the libbitcoin project, that library is actually from
+the [bitcoin-core](https://github.com/bitcoin-core/secp256k1) project. However
+libbitcoin keeps a fork of it in their project, and that is what I package just
+to make sure changes made by bitcoin-core do not break the build of libbitcoin
+packages that depend upon it.
+
+This package will likely always use a git checkout as I do not expect tagged
+release tarballs for it will ever exist.
+
+The git project to use: [libbitcoin/secp256k1](https://github.com/libbitcoin/secp256k1)
