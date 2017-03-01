@@ -73,3 +73,33 @@ where LibreOffice is not installed. If you use it on the desktop, however,
 LibreOffice is one of the packages where the CentOS 7 version links against
 boost and has to be rebuilt to upgrade the CentOS 7 provided boost to a newer
 version.
+
+I did not just rebuild the CentOS 7 LibreOffice, I decided to update to the
+version provided by Fedora Rawhide.
+
+The RPM spec file from Rawhide that I started from had macros to do some things
+differently when building on RHEL/CentOS 7. I did not like all of those
+differences.
+
+For example, many of the build dependencies are not packaged for CentOS so what
+the spec file does in those cases is bundle the source for those dependencies
+and build them before building LibreOffice, using those libraries within
+LibreOffice.
+
+I chose instead to build those dependencies as separate packages the same way
+they are done in Fedora. That way if there is a bug fix to one of those
+shared libraries, I can simply update the dependency and do not have to rebuild
+all of LibreOffice just to get the bug fix.
+
+I also build LibreOffice against the newer version of ICU. As LibreOffice links
+against boost and I build the newer boost against the newer ICU, it made sense
+to also build LibreOffice against the newer ICU even though it is not strictly
+necessary.
+
+Please note that building LibreOffice takes a long time and takes a lot of
+space. I noticed the build goes a lot faster if you have an SSD dedicated for
+the mock build root. It also helps to have a good CPU, e.g. a quad code Xeon
+with hyper-threading, the build will utilize all 8 threads and it will build
+significantly faster than on something like an i5 where only four threads are
+available. With 16 GB of memory, building LibreOffice peak memory usage was
+at about 75% of available.
