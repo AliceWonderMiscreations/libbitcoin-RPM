@@ -225,7 +225,9 @@ the branch is tagged.
 ## libbitcoin 4.x branch
 
 I have just started writing the RPM spec files for this branch. This branch
-should not be used on production systems.
+should not be used on production systems. This branch will only use git master
+and will not use tagged source tarballs. That is the nature of a development
+branch.
 
 ### libbitcoin4.spec
 
@@ -240,3 +242,30 @@ This is the libbitcoin protocol library. Last build attempt, both the build
 itself and `make check` were successful.
 
 The git project to use: [libbitcoin/libbitcoin-protocol](https://github.com/libbitcoin/libbitcoin-protocol)
+
+### libbitcoin4-consensus.spec
+
+This is the libbitcoin library that provides for consensus with bitcoin-core.
+It is an optional library but the RPM spec files here will use it when building
+other libbitcoin packages.
+
+The spec file may need some adjustments to the python sub-package related to
+Fedora packaging guidelines. Specifically the following files:
+
++ `/usr/lib64/python2.7/site-packages/libbitcoin-consensus/_bitcoin-consensus.a`
++ `/usr/lib64/python2.7/site-packages/libbitcoin-consensus/_bitcoin-consensus.la`
++ `/usr/lib64/python2.7/site-packages/libbitcoin-consensus/_bitcoin-consensus.so`
++ `/usr/lib64/python2.7/site-packages/libbitcoin-consensus/_bitcoin-consensus.so.0`
++ `/usr/lib64/python2.7/site-packages/libbitcoin-consensus/_bitcoin-consensus.so.0.0.0`
+
+That does not look right to me, the `.la` file probably should not be packaged,
+the `.a` and \.so` files probably belong in a `-devel` package if packaged at
+all, and I do not know anout the shared libraries.
+
+Right now it builds the python package for python2 if in CentOS and python3 if
+in Fedora. It *probably* should build for both regardless of the OS but I
+suspect that will take some effort to accomplish.
+
+Last build attempt, both the build itself and `make check` were successful.
+
+The git project to use: [libbitcoin/libbitcoin-consensus](https://github.com/libbitcoin/libbitcoin-consensus)
