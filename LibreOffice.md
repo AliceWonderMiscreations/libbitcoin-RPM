@@ -5,7 +5,7 @@ need to update boost and therefore do not need to rebuild LibreOffice.*
 
 It is my suspicion that most people wanting libbitcoin want it for a server
 where LibreOffice is not installed. If you use it on the desktop, however,
-LibreOffice is one of the packages where the CentOS 7 packages links against
+LibreOffice is one of the packages where the CentOS 7 packages link against
 boost, so it has to be rebuilt to upgrade the CentOS 7 provided boost to a
 newer version.
 
@@ -17,9 +17,9 @@ differently when building on RHEL/CentOS 7. I did not like all of those
 differences.
 
 For example, many of the build dependencies are not packaged for CentOS so what
-the spec file does in those cases is bundle the source for those dependencies
-and build them before building LibreOffice, using those libraries within
-LibreOffice.
+the Fedora Rawhide spec file does in those cases is bundle the source for those
+dependencies and build them before building LibreOffice, using those libraries
+within LibreOffice.
 
 I chose instead to build those dependencies as separate packages the same way
 they are done in Fedora. That way if there is a bug fix to one of those
@@ -33,11 +33,12 @@ necessary.
 
 Please note that building LibreOffice takes a long time and takes a lot of
 space. I noticed the build goes a lot faster if you have an SSD dedicated for
-the mock build root. It also helps to have a good CPU, e.g. a quad code Xeon
+the mock build root. It also helps to have a good CPU, e.g. a quad core Xeon
 with hyper-threading, the build will utilize all 8 threads and it will build
 significantly faster than on something like an i5 where only four threads are
 available. With 16 GB of memory, building LibreOffice peak memory usage was
-at about 75% of available.
+at about 75% of available. If you only have 8 GB of memory (or less) bhuilding
+LibreOffice will likely take quite a bit longer.
 
 ## LibreOffice Build Order
 
@@ -45,6 +46,7 @@ If LibreOffice is on your system and needs to be rebuilt for the newer boost
 library, make sure `compat-icu` and `boost` are rebuilt first. Then build in
 the following order:
 
+* `harfbuzz`
 * `libcmis`
 * `mdds`
 * `libixion`
@@ -54,12 +56,17 @@ the following order:
 * `libzmf`
 * `libe-book`
 
-Use the source RPM from Fedora Rawhide for the above packages. They should
-build just fine in CentOS 7 when built in that order.
+With the exception of `harfbuzz`, just use the source RPM from Fedora Rawhide
+for the above packages. They should build just fine in CentOS 7 when built in
+that order.
+
+For `harfbuzz` you should start with the Source RPM from [CentOS 7](http://vault.centos.org/7.3.1611/)
+(currently in `os/Source/` but always check in `updates/Source/SPackages/` for
+an updated source package) but use the RPM spec file supplied here.
 
 Then you can build LibreOffice packages that link and the newer boost packages
 and the newer ICU packages.
 
-Start with the source RPM from Fedora Rawhide to get the source tarball and
-patches. Then replace the RPM spec file with the LibreOffice spec file that
-is provided here.
+For LibreOffice, start with the source RPM from Fedora Rawhide to get the
+source tarball and patches. Then replace the RPM spec file with the LibreOffice
+spec file that is provided here.
