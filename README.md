@@ -213,3 +213,30 @@ This package will likely always use a git checkout as I do not expect tagged
 release tarballs for it will ever exist.
 
 The git project to use: [libbitcoin/secp256k1](https://github.com/libbitcoin/secp256k1)
+
+That package is a build dependency of both the 3.x and 4.x branches of
+libbitcoin.
+
+## libbitcoin 3.x branch
+
+This branch has not yet been fully tagged, spec files will be uploaded after
+the branch is tagged.
+
+## libbitcoin 4.x branch
+
+I have just started writing the RPM spec files for this branch. This branch
+should not be used on production systems.
+
+### libbitcoin4.spec
+
+This is the core library for libbitcoin. Last build attempt, both the build
+itself and `make check` were successful.
+
+The git project to use: [libbitcoin/libbitcoin](https://github.com/libbitcoin/libbitcoin)
+
+### libbitcoin4-protocol.spec
+
+This is the libbitcoin protocol library. Last build attempt, both the build
+itself and `make check` were successful.
+
+The git project to use: [libbitcoin/libbitcoin-protocol](https://github.com/libbitcoin/libbitcoin-protocol)
