@@ -44,6 +44,22 @@ not to the software that the spec files create packages for.
 I just like my spec files to be CC0 so that no one has to ask me to re-use them
 for whatever purpose they want. They can.
 
+## Software Patent Statement
+
+The software that libbitcoin packages depend upon to build are distributed by
+distributions like Fedora and CentOS that have legal departments that look out
+for software patent infringement and are thus *probably* not in violation of
+any currently known valid software patent claims.
+
+With respect to libbitcoin itself, I do not really know if there are any valid
+software patent claims and what countries they apply to if they exist, and I do
+not really care. I personally find the whole concept of software patents to be
+extremely offensive.
+
+However if you care about software patents, or if your legal department cares
+about software patents, then it might be prudent to have someone look into it
+before deploying libbitcoin because honestly, I do not know and I do not care.
+
 ## Spec File Target
 I am targeting CentOS 7 with EPEL for some dependencies with these RPM spec
 files. What that means is that they should build in mock configured to use the
