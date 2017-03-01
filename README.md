@@ -259,7 +259,7 @@ Fedora packaging guidelines. Specifically the following files:
 + `/usr/lib64/python2.7/site-packages/libbitcoin-consensus/_bitcoin-consensus.so.0.0.0`
 
 That does not look right to me, the `.la` file probably should not be packaged,
-the `.a` and \.so` files probably belong in a `-devel` package if packaged at
+the `.a` and `.so` files probably belong in a `-devel` package if packaged at
 all, and I do not know anout the shared libraries.
 
 Right now it builds the python package for python2 if in CentOS and python3 if
