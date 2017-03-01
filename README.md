@@ -1,6 +1,7 @@
-# libbitcoin-RPM
+LibBitcoin-RPM
+==============
 
-RPM spec files for libbitcoin client - CC0 (Creative Commons Public Domain)
+RPM spec files for libbitcoin project - CC0 (Creative Commons Public Domain)
 
 These are RPM spec files I created for the libbitcoin project. Please note that
 I am not a developer of that project. Bugs with libbitcoin should be reported
@@ -11,6 +12,7 @@ The libbitcoin website is [https://libbitcoin.org/](https://libbitcoin.org/).
 Their project on GitHub is [https://github.com/libbitcoin](https://github.com/libbitcoin).
 
 ## YUM repository
+
 If you just want the RPM packages for CentOS 7, please visit the yum repository
 I created for that. Well, it is not live yet, but soon will be. When it is live
 there will be a link here.
@@ -20,6 +22,7 @@ familiar with how to use the [mock](https://github.com/rpm-software-management/m
 build system.
 
 ## CC0 Public Domain
+
 No license is required to use the RPM spec files I created here. I consider the
 RPM spec files to be Public Domain. See [Creative Commons CC0](https://wiki.creativecommons.org/wiki/CC0).
 
@@ -61,6 +64,7 @@ about software patents, then it might be prudent to have someone look into it
 before deploying libbitcoin because honestly, I do not know and I do not care.
 
 ## Spec File Target
+
 I am targeting CentOS 7 with EPEL for some dependencies with these RPM spec
 files. What that means is that they should build in mock configured to use the
 CentOS 7 base, updates, and EPEL repositories for any build dependencies that
@@ -140,7 +144,7 @@ For LibreOffice, please see the [LibreOffice](./LibreOffice.md) file.
 
 ## Other Compat Packages
 
-*Fedora users __probably__ do not need to worry about this.*
+_Fedora users should not have to worry about this section_
 
 In addition to boost and ICU there are a few other build dependencies where the
 version in CentOS 7 is not new enough:
@@ -168,3 +172,22 @@ Build the dependencies in the following order:
 * `compat-libpng`
 * `compat-qrencode`
 * `compat-zeromq`
+
+LIBBITCOIN RPM SPEC FILES
+=========================
+
+There are two branches of the libbitcoin project, the 3.x branch is the current
+stable branch and the 4.x branch is the development branch that should not be
+used in production but is very useful for developing software that uses
+libbitcoin so that you can know it will be ready when 4.x branch becomes the
+stable branch.
+
+RPM spec files are provided for both branches.
+
+The 4.x development branch packages all start with the name `libbitcoin4` and
+will have `4.0.0` as the RPM version number and `0.git.` as the start of the
+RPM release tag.
+
+The stable 3.x branch packages will all start with the name `libbitcoin` and
+*usually* will be built from tagged release tarballs rather than from a git
+checkout.
