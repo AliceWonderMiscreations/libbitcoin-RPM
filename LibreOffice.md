@@ -70,3 +70,9 @@ against the newer boost packages and the newer ICU packages.
 For LibreOffice, start with the source RPM from Fedora Rawhide to get the
 source tarball and patches (there are a lot). Then replace the RPM spec file
 with the LibreOffice spec file that is provided here.
+
+The needed source file `0168229624cfac409e766913506961a8-ucpp-1.3.2.tar.gz` is
+not included with the Fedora Rawhide source RPM because of stupid reasons I
+will not go into here.
+
+You can get it from [https://svn.apache.org/repos/asf/openoffice/trunk/ext_sources/](https://svn.apache.org/repos/asf/openoffice/trunk/ext_sources/)
