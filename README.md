@@ -173,6 +173,8 @@ Build the dependencies in the following order:
 * `compat-qrencode`
 * `compat-zeromq`
 
+
+
 LIBBITCOIN RPM SPEC FILES
 =========================
 
@@ -191,3 +193,18 @@ RPM release tag.
 The stable 3.x branch packages will all start with the name `libbitcoin` and
 *usually* will be built from tagged release tarballs rather than from a git
 checkout.
+
+## git packages
+
+When a package is built from a git checkout, the source is what you get from
+the `Download ZIP` link with the the `Clone or download` menu from the github
+repository for the package.
+
+I then prepend the zip archive name with the `sha256sum` of the zip archive.
+After downloading the zip archive yourself, you should do the same and then
+modify the `Source0:` in the spec file to reflect the sha256 when you grabbed
+the source.
+
+You also will need to change the define `gitdate` macro in the RPM spec file to
+reflect the `YYYYMMDD` when you downloaded the zip archive. Do not forget to
+make a changelog entry reflecting the date you grabbed the zip archive.
