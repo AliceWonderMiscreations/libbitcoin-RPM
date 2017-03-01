@@ -37,7 +37,7 @@ the mock build root. It also helps to have a good CPU, e.g. a quad core Xeon
 with hyper-threading, the build will utilize all 8 threads and it will build
 significantly faster than on something like an i5 where only four threads are
 available. With 16 GB of memory, building LibreOffice peak memory usage was
-at about 75% of available. If you only have 8 GB of memory (or less) bhuilding
+at about 75% of available. If you only have 8 GB of memory (or less) building
 LibreOffice will likely take quite a bit longer.
 
 ## LibreOffice Build Order
