@@ -8,11 +8,11 @@ to that project, not to me.
 
 The libbitcoin website is [https://libbitcoin.org/](https://libbitcoin.org/).
 
-Their project on GitHub is [https://github.com/libbitcoin](https://github.com/libbitcoin)
+Their project on GitHub is [https://github.com/libbitcoin](https://github.com/libbitcoin).
 
 ## Public Domain
 No license is required to use the RPM spec files provided here. I consider the
-RPM spec files to be Public Domain. See [https://wiki.creativecommons.org/wiki/CC0](Creative Commons CC0)
+RPM spec files to be Public Domain. See [Creative Commons CC0](https://wiki.creativecommons.org/wiki/CC0).
 
 However please note that it is considered bad form to remove RPM spec file
 changelog entries. If you do so, though, there are no legal ramifications. I just might
@@ -32,7 +32,7 @@ not to the software that the spec files create packages for.
 
 ## Spec File Target
 I am targeting CentOS 7 with EPEL for some dependencies with these RPM spec
-files. What that means is that they should build in [https://github.com/rpm-software-management/mock/](mock)
+files. What that means is that they should build in [mock](https://github.com/rpm-software-management/mock/)
 configured to use the CentOS 7 base, updates, and EPEL repositories for any
 build dependencies.
 
@@ -42,8 +42,8 @@ have no desire to set up a Fedora mock buildroot to find out.
 
 ## BOOST and ICU
 
-The version of [http://www.boost.org/](boost) in CentOS 7 is too old
-to build libbitcoin and the version of [http://site.icu-project.org/](ICU) in
+The version of [boost](http://www.boost.org/) in CentOS 7 is too old
+to build libbitcoin and the version of [ICU](http://site.icu-project.org/) in
 CentOS 7 is too old for the master development branch of libbitcoin.
 
 In the case of ICU, the `libicu` package in CentOS 7 is used by too many RPM
