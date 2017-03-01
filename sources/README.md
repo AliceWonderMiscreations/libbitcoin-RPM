@@ -7,4 +7,4 @@ The source tarballs can usually be retrieved via `curl` or `wget` from the
 URL listed in the RPM spec file.
 
 No sources for LibreOffice are in this directory, those must be retrieved from
-the Fedora Rawhise source RPM.
+the Fedora Rawhide source RPM.
