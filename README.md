@@ -127,17 +127,9 @@ ships with.
 You will need to rebuild those packages against the newer boost.
 
 The source RPM for those packages will rebuild against the newer boost without
-any issues with two exceptions:
+any issues with one exception:
 
-* harfbuzz
 * LibreOffice
-
-The `harfbuzz` package actually does build fine against the newer boost, but
-that package also builds against ICU and I reccomend building it against the
-newer version of ICU provided here.
-
-If harfbuzz is installed on your system, I recommend rebuilding it using the
-RPM spec file provided here.
 
 For LibreOffice, please see the [LibreOffice](./LibreOffice.md) file.
 
