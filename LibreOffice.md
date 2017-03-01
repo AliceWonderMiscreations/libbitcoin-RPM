@@ -61,7 +61,7 @@ for the above packages. They should build just fine in CentOS 7 when built in
 that order.
 
 For `harfbuzz` you should use the RPM spec file provided here. The spec file
-provided here started life in the Fedora Rawhide world but had been modified
+provided here started life in the Fedora Rawhide world but has been modified
 to build against the `compat-icu` package on RHEL/CentOS systems.
 
 Once those dependencies are built you can build LibreOffice packages that link
