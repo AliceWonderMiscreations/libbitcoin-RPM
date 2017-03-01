@@ -68,6 +68,9 @@ differently.
 
 ### LibreOffice
 
+*This is something only CentOS 7 users need to worry about. Fedora users do not
+need to update boost and therefore do not need to rebuild LibreOffice.*
+
 It is my suspicion that most people wanting libbitcoin want it for a server
 where LibreOffice is not installed. If you use it on the desktop, however,
 LibreOffice is one of the packages where the CentOS 7 version links against
