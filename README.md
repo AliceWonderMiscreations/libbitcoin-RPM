@@ -160,10 +160,10 @@ CentOS 7 updates, and EPEL for CentOS 7.
 Build the dependencies in the following order:
 
 * `compat-icu`
-* `boost`
 * `compat-libpng`
-* `compat-qrencode`
+* `compat-qrencodelibs`
 * `compat-zeromq`
+* `boost`
 
 
 
