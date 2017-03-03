@@ -255,3 +255,10 @@ The git project to use: [libbitcoin/libbitcoin-database](https://github.com/libb
 
 __note:__ With boost 1.63.0, `make check` fails. The cause of that is still
 being investigated.
+
+### libbitcoin4-blockchain.spec
+
+This id the libbitcoin blockchain library. Last build attempt, both the build
+itself and `make check` were successful.
+
+The git project to use: [libbitcoin/libbitcoin-blockchain](https://github.com/libbitcoin/libbitcoin-blockchain)
