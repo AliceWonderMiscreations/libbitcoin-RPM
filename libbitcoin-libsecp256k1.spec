@@ -1,7 +1,7 @@
 Name:		libbitcoin-libsecp256k1
 Version:	0.1
 %define gitdate 20170226
-Release:	0.git.%{gitdate}%{?dist}.1
+Release:	0.git.%{gitdate}%{?dist}.2
 Summary:	libbitcoin fork of libsecp256k1
 
 Group:		LibBitcoin/Libraries
@@ -44,7 +44,7 @@ build software that links against %{name}.
 
 
 %build
-%configure --enable-module-recovery %{?_with_boost}
+%configure --enable-module-recovery
 make %{?_smp_mflags}
 
 
@@ -74,6 +74,9 @@ make check
 
 
 %changelog
+* Fri Mar 03 2017 Alice Wonder <buildmaster@librelamp.com> - 0.1-0.git.20170226.2
+- Remove boost macro, this package doesn't use boost
+
 * Fri Mar 03 2017 Alice Wonder <buildmaster@librelamp.com> - 0.1-0.git.20170226.1
 - Add macro for optional setting of boost path
 
