@@ -76,9 +76,36 @@ I also *hope* that these RPM spec files will build in Fedora Rawhide and/or the
 current stable release of Fedora, however I do not run a Fedora system and I
 have no desire to set up a Fedora mock buildroot to find out.
 
-Fedora 25 may need some of the same type of special handling that CentOS 7
-requires, but I *think* Fedora 26 (current Rawhide) has new enough packages for
-the various libbitcoin dependencies.
+Fedora 25 may need some (or all) of the compatibility packages and the same
+type of special handling that CentOS 7 requires, accomplished with the
+`%if 0%{?rhel}` blocks within the spec files.
+
+### Install Prefix Notes
+
+By default, RPM and the mock build system will use `/usr` as the install
+prefix. Some system administrators may prefer a prefix with `/opt`, such as
+`/opt/libbitcoin` or whatever.
+
+Using `/usr` is what I do. If that is fine with you too, then you can skip the
+rest of this sub-section.
+
+If you do wish to change the install prefix when building the packages, you
+will need to specifically define some macros to the mock system at build time.
+For example:
+
+    mock -D '_prefix /opt/libbitcoin' \
+      -D '_datadir /usr/share' \
+      -r libbitcoin-7-x86_64 compat-libpng-1.6.28-2.el7.centos.0.src.rpm`
+
+You probably will need to redefine more than just the `_prefix` macro, you will
+need to make sure the `pkgconfig` utility knows to look for dependencies within
+the `/opt/libbitcoin` prefix as well as within the `/usr` prefix, and you may
+need to define a macro so that `/sbin/ldconfig` inside the mock buildroot knows
+to look for shared libraries there too.
+
+You will need to create a file within the `/etc/ld.so.conf.d/` on your
+filesystem when you install the packages so the shared libraries can be found
+without needing to resort to an rpath in executables that need to load them.
 
 ## Compatibility Packages
 
@@ -91,50 +118,7 @@ will not build libbitcoin.
 
 To remedy this issue, I created compatibility packages that will allow the
 newer shared libraries from those packages to be installed in parallel with the
-versions of those libraries as supplied by CentOS 7 or by EPEL for CentOS 7.
-
-Please note that I did use a prefix of `/usr` for these compatibility packages.
-
-That means that while both versions of the shared libraries themselves can be
-installed at the same time, the development packages will conflict and only one
-version of the development packages can be installed at the same time.
-
-On production systems this is not a problem, production systems should not need
-the development header files.
-
-On a workstation where you are building software, however, it does mean you
-will need to pay attention to which devel package is installed so that you do
-not accidentally use the wrong one.
-
-For example, if you intend to compile software that links against boost 1.58.0
-then you need to make sure `compat-boost-devel` is installed, but if you intend
-to build software that links against the CentOS 7 provided boost 1.53.0 then
-you will need to make `boost-devel` is installed. Both can not be installed at
-the same time.
-
-### Why compat devel packages conflict with CentOS version devel packages
-
-I apologize for this inconvenience, but I do not like putting software under
-RPM management in `/opt`. To me, `/opt` is for software packaged by a third
-party vendor outside of the RPM / yum system (e.g. TeXLive or Oracle Java) and
-software managed by RPM / yum should have an install prefix of `/usr`.
-
-Basically, it is my opinion that one should always be able to unmount `/opt`
-without *anything* in `/usr` breaking __and__ without the RPM database
-becoming inconsistent. That is my philosophy, other system administrators have
-a different philosophy, but I am the one creating these packages.
-
-Feel free to redefine the RPM `%{_prefix}` macro to `/opt/libbitcoin` or
-whatever floats your boat if you do not want this limitation. You will then
-also likely need to change the `pkgconfig` related macros so `configure` knows
-where to find the right `whatever.pc` file.
-
-Finally you will also need to make an entry in `/etc/ld.conf.d/` so `ld` knows
-to look in `/opt/libbitcoin/lib64` (or wherever) for the shared the libraries
-provided by these packages.
-
-Personally I prefer to just use `/usr` even if it means occasionally switching
-which devel package is installed.
+versions of those libraries as supplied by CentOS 7.
 
 ## Dependency Build Order
 
