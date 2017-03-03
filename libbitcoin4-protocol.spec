@@ -1,7 +1,7 @@
 Name:		libbitcoin4-protocol
 Version:	4.0.0
 %define gitdate 20170228
-Release:	0.git.%{gitdate}%{?dist}.1
+Release:	0.git.%{gitdate}%{?dist}.2
 Summary:	Bitcoin Blockchain Query Protocol
 
 Group:		LibBitcoin/Libraries
@@ -50,7 +50,7 @@ make %{?_smp_mflags}
 %install
 make install DESTDIR=%{buildroot}
 rm -f %{buildroot}%{_libdir}/*.la
-rm -rf %{buildroot}%{_datadir}/doc/libbitcoin-protocol
+rm -rf %{buildroot}%{_prefix}/share/doc/libbitcoin-protocol
 
 %check
 make check
@@ -80,6 +80,9 @@ make check
 
 
 %changelog
+* Fri Mar 03 2017 Alice Wonder <buildmaster@librelamp.com> - 4.0.0-0.git.20170228.2
+- Fix for defining an alternate %%_prefix at build time.
+
 * Tue Feb 28 2017 Alice Wonder <buildmaster@librelamp.com> - 4.0.0-0.git.20170228.1
 - Change name to libbitcoin4-protocol due to devel rather than stable nature.
 

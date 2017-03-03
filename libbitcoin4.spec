@@ -1,7 +1,7 @@
 Name:		libbitcoin4
 Version:	4.0.0
 %define gitdate 20170302
-Release:	0.git.%{gitdate}%{?dist}.0
+Release:	0.git.%{gitdate}%{?dist}.1
 Summary:	Bitcoin Cross-Platform C++ Development Toolkit
 
 Group:		LibBitcoin/Libraries
@@ -51,7 +51,7 @@ make %{?_smp_mflags}
 %install
 make install DESTDIR=%{buildroot}
 rm -f %{buildroot}%{_libdir}/libbitcoin.la
-rm -rf %{buildroot}%{_datadir}/doc/libbitcoin
+rm -rf %{buildroot}%{_prefix}/share/doc/libbitcoin
 
 %check
 make check
@@ -115,6 +115,9 @@ make check
 
 
 %changelog
+* Fri Mar 03 2017 Alice Wonder <buildmaster@librelamp.com> - 4.0.0-0.git.20170302.1
+- Fix for defining an alternate %%_prefix at build time.
+
 * Thu Mar 02 2017 Alice Wonder <buildmaster@librelamp.com> - 4.0.0-0.git.20170302.0
 - Update master checkout
 - for CentOS, BuildRequre compat-boost-devel

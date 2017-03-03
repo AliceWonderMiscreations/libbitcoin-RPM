@@ -1,7 +1,7 @@
 Name:		libbitcoin4-consensus
 Version:	4.0.0
 %define gitdate 20170228
-Release:	0.git.%{gitdate}%{?dist}.1
+Release:	0.git.%{gitdate}%{?dist}.2
 Summary:	Bitcoin consensus library
 
 Group:		LibBitcoin/Libraries
@@ -86,7 +86,7 @@ make %{?_smp_mflags}
 %install
 make install DESTDIR=%{buildroot}
 rm -f %{buildroot}%{_libdir}/*.la
-rm -rf %{buildroot}%{_datadir}/doc/libbitcoin-consensus
+rm -rf %{buildroot}%{_prefix}/share/doc/libbitcoin-consensus
 
 %check
 make check
@@ -133,6 +133,9 @@ make check
 
 
 %changelog
+* Fri Mar 03 2017 Alice Wonder <buildmaster@librelamp.com> - 4.0.0-0.git.20170228.2
+- Fix for defining an alternate %%_prefix at build time.
+
 * Thu Mar 02 2017 Alice Wonder <buildmaster@librelamp.com> - 4.0.0-0.git.20170228.1
 - In CentOS build against compat-boost
 

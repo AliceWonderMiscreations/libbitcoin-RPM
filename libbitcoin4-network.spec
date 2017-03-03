@@ -1,7 +1,7 @@
 Name:		libbitcoin4-network
 Version:	4.0.0
 %define gitdate 20170303
-Release:	0.git.%{gitdate}%{?dist}.0
+Release:	0.git.%{gitdate}%{?dist}.1
 Summary:	Bitcoin P2P Network Library
 
 Group:		LibBitcoin/Libraries
@@ -49,7 +49,7 @@ make %{?_smp_mflags}
 %install
 make install DESTDIR=%{buildroot}
 rm -f %{buildroot}%{_libdir}/libbitcoin-network.la
-rm -rf %{buildroot}%{_datadir}/doc/libbitcoin-network
+rm -rf %{buildroot}%{_prefix}/share/doc/libbitcoin-network
 
 %check
 make check
@@ -81,5 +81,8 @@ make check
 
 
 %changelog
+* Fri Mar 03 2017 Alice Wonder <buildmaster@librelamp.com> - 4.0.0-0.git.20170303.1
+- Fix for defining an alternate %%_prefix at build time.
+
 * Fri Mar 03 2017 Alice Wonder <buildmaster@librelamp.com> - 4.0.0-0.git.20170303.0
 - Initial RPM spec file.
