@@ -109,6 +109,9 @@ example, a file containing the following:
     #library path for libbitcoin packages
     /opt/libbitcoin/lib64
 
+If you want easy access to any man pages installed, you will have to adjust
+your `MANPATH` to reflect the alternate install prefix as well.
+
 ## Compatibility Packages
 
 Several of the build dependencies for libbitcoin are newer than the versions of
