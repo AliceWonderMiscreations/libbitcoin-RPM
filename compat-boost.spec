@@ -37,7 +37,7 @@ Name: compat-boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.58.0
 %define version_enc 1_58_0
-Release: 1%{?dist}
+Release: 1%{?dist}.1
 License: Boost and MIT and Python
 
 %define toplev_dirname boost_%{version_enc}
@@ -789,14 +789,14 @@ echo ============================= install Boost.Build ==================
 (cd tools/build
  ./b2 --prefix=$RPM_BUILD_ROOT%{_prefix} install
  # Fix some permissions
- chmod -x $RPM_BUILD_ROOT%{_datadir}/boost-build/src/build/alias.py
- chmod +x $RPM_BUILD_ROOT%{_datadir}/boost-build/src/tools/doxproc.py
+ chmod -x $RPM_BUILD_ROOT%{_prefix}/share/boost-build/src/build/alias.py
+ chmod +x $RPM_BUILD_ROOT%{_prefix}/share/boost-build/src/tools/doxproc.py
  # We don't want to distribute this
  rm -f $RPM_BUILD_ROOT%{_bindir}/b2
  # Not a real file
- rm -f $RPM_BUILD_ROOT%{_datadir}/boost-build/src/build/project.ann.py
+ rm -f $RPM_BUILD_ROOT%{_prefix}/share/boost-build/src/build/project.ann.py
  # Empty file
- rm -f $RPM_BUILD_ROOT%{_datadir}/boost-build/src/tools/doxygen/windows-paths-check.hpp
+ rm -f $RPM_BUILD_ROOT%{_prefix}/share/boost-build/src/tools/doxygen/windows-paths-check.hpp
  # Install the manual page
  %{__install} -p -m 644 v2/doc/bjam.1 -D $RPM_BUILD_ROOT%{_mandir}/man1/bjam.1
  # Install the unpatched gcc.jam
@@ -1236,6 +1236,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Fri Mar 03 2017 Alice Wonder <buildmaster@librelamp.com> - 1.58.0-1.1
+- Partial fix to https://github.com/AliceWonderMiscreations/libbitcoin-RPM/issues/2
+-  mpich and openmpi still install libraries in wrong directory when
+-  %%{_prefix} is changed.
+
 * Thu Mar 02 2017 Alice Wonder <buildmaster@librelamp.com> - 1.58.0-1
 - Update to 1.53.0
 - Merge some changes from f26 rawhide 1.63.0 spec file
