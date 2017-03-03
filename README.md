@@ -252,3 +252,6 @@ This is the libbitcoin database library. Last build attempt, both the build
 itself and `make check` were successful.
 
 The git project to use: [libbitcoin/libbitcoin-database](https://github.com/libbitcoin/libbitcoin-database)
+
+__note:__ With boost 1.63.0, `make check` fails. The cause of that is still
+being investigated.
