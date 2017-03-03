@@ -34,7 +34,7 @@ just might cry if I find out, that is all.
 
 Please note that the Public Domain nature only applies to RPM spec files that
 I wrote from scratch (all of the libbitcoin spec files). For several (all
-cuurently) of the other RPM spec files, I started with RPM spec files provided
+currently) of the other RPM spec files, I started with RPM spec files provided
 by CentOS, EPEL, or Fedora.
 
 Obviously I can not apply the CC0 public domain license to those. For RPM
@@ -80,7 +80,7 @@ Fedora 25 may need some of the same type of special handling that CentOS 7
 requires, but I *think* Fedora 26 (current Rawhide) has new enough packages for
 the various libbitcoin dependencies.
 
-## Compatability Packages
+## Compatibility Packages
 
 Several of the build dependencies for libbitcoin are newer than the versions of
 those libraries in CentOS. In most of those cases, they seem to be optional
@@ -89,11 +89,11 @@ build dependencies but are still nice to have.
 In the case of boost, it is a must. CentOS 7 ships with boost 1.53.0 and that
 will not build libbitcoin.
 
-To remedy this issue, I created compatability packages that will allow the
+To remedy this issue, I created compatibility packages that will allow the
 newer shared libraries from those packages to be installed in parallel with the
 versions of those libraries as supplied by CentOS 7 or by EPEL for CentOS 7.
 
-Please note that I did use a prefix of `/usr` for these compatability packages.
+Please note that I did use a prefix of `/usr` for these compatibility packages.
 
 That means that while both versions of the shared libraries themselves can be
 installed at the same time, the development packages will conflict and only one
@@ -236,7 +236,7 @@ Fedora packaging guidelines. Specifically the following files:
 
 That does not look right to me, the `.la` file probably should not be packaged,
 the `.a` and `.so` files probably belong in a `-devel` package if packaged at
-all, and I do not know anout the shared libraries.
+all, and I do not know about the shared libraries.
 
 Right now it builds the python package for python2 if in CentOS and python3 if
 in Fedora. It *probably* should build for both regardless of the OS but I
@@ -245,3 +245,10 @@ suspect that will take some effort to accomplish.
 Last build attempt, both the build itself and `make check` were successful.
 
 The git project to use: [libbitcoin/libbitcoin-consensus](https://github.com/libbitcoin/libbitcoin-consensus)
+
+### libbitcoin4-database.spec
+
+This is the libbitcoin database library. Last build attempt, both the build
+itself and `make check` were successful.
+
+The git project to use: [libbitcoin/libbitcoin-database](https://github.com/libbitcoin/libbitcoin-database)
