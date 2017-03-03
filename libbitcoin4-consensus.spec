@@ -1,7 +1,7 @@
 Name:		libbitcoin4-consensus
 Version:	4.0.0
 %define gitdate 20170228
-Release:	0.git.%{gitdate}%{?dist}.0
+Release:	0.git.%{gitdate}%{?dist}.1
 Summary:	Bitcoin consensus library
 
 Group:		LibBitcoin/Libraries
@@ -10,15 +10,17 @@ URL:		https://libbitcoin.org/
 Source0:	fda2a060fb5d71a2dd8e62af846f104bbaecec90cb5bcb585eb45f2aa22abe00-libbitcoin-consensus-master.zip
 
 BuildRequires:	autoconf automake libtool
+BuildRequires:	libsecp256k1-devel >= 0.0.1
+BuildRequires:	java-devel
+%if 0%{?rhel}
+BuildRequires:	compat-boost-devel >= 1.57.0
+BuildRequires:	compat-boost-test >= 1.57.0
+BuildRequires:	python-devel >= 2.7
+%else
 BuildRequires:	boost-devel >= 1.57.0
 BuildRequires:	boost-test >= 1.57.0
-BuildRequires:	libsecp256k1-devel >= 0.0.1
-%if 0%{?fedora}
 BuildRequires:	python3-devel
-%else
-BuildRequires:	python-devel >= 2.7
 %endif
-BuildRequires:	java-devel
 
 %description
 This library provides libbitcoin consensus checks with the Satoshi client.
@@ -131,6 +133,9 @@ make check
 
 
 %changelog
+* Thu Mar 02 2017 Alice Wonder <buildmaster@librelamp.com> - 4.0.0-0.git.20170228.1
+- In CentOS build against compat-boost
+
 * Tue Feb 28 2017 Alice Wonder <buildmaster@librelamp.com> - 4.0.0-0.git.20170228.0
 - Build 4.0.0 from git master, add support for Python3 if using Fedora (untested)
 - Rename to libbitcoin4-consensus
