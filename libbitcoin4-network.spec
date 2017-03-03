@@ -42,7 +42,7 @@ compile software that links against %{name}.
 
 
 %build
-%configure
+%configure %{?_with_boost}
 make %{?_smp_mflags}
 
 
@@ -83,6 +83,7 @@ make check
 %changelog
 * Fri Mar 03 2017 Alice Wonder <buildmaster@librelamp.com> - 4.0.0-0.git.20170303.1
 - Fix for defining an alternate %%_prefix at build time.
+- Optional macro for defining --with-boost configure option
 
 * Fri Mar 03 2017 Alice Wonder <buildmaster@librelamp.com> - 4.0.0-0.git.20170303.0
 - Initial RPM spec file.

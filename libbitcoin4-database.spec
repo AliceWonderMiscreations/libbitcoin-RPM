@@ -45,7 +45,7 @@ compile software that links against %{name}.
 
 
 %build
-%configure
+%configure %{?_with_boost}
 make %{?_smp_mflags}
 
 
@@ -91,6 +91,7 @@ make check
 %changelog
 * Fri Mar 03 2017 Alice Wonder <buildmaster@librelamp.com> - 4.0.0-0.git.20170228.2
 - Fix for defining an alternate %%_prefix at build time.
+- Optional macro for defining --with-boost configure option
 
 * Thu Mar 02 2017 Alice Wonder <buildmaster@librelamp.com> - 4.0.0-0.git.20170228.1
 - Building against boost 1.58.0 to fix make check issue

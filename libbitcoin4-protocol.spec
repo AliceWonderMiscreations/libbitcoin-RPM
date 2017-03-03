@@ -43,7 +43,7 @@ compile software that links against %{name}.
 
 
 %build
-%configure
+%configure %{?_with_boost}
 make %{?_smp_mflags}
 
 
@@ -82,6 +82,7 @@ make check
 %changelog
 * Fri Mar 03 2017 Alice Wonder <buildmaster@librelamp.com> - 4.0.0-0.git.20170228.2
 - Fix for defining an alternate %%_prefix at build time.
+- Optional macro for defining --with-boost configure option
 
 * Tue Feb 28 2017 Alice Wonder <buildmaster@librelamp.com> - 4.0.0-0.git.20170228.1
 - Change name to libbitcoin4-protocol due to devel rather than stable nature.

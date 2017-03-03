@@ -79,7 +79,7 @@ This package provides the python2 bindings for %{name}.
 
 
 %build
-%configure --with-java --with-python
+%configure --with-java --with-python %{?_with_boost}
 make %{?_smp_mflags}
 
 
@@ -135,6 +135,7 @@ make check
 %changelog
 * Fri Mar 03 2017 Alice Wonder <buildmaster@librelamp.com> - 4.0.0-0.git.20170228.2
 - Fix for defining an alternate %%_prefix at build time.
+- Optional macro for defining --with-boost configure option
 
 * Thu Mar 02 2017 Alice Wonder <buildmaster@librelamp.com> - 4.0.0-0.git.20170228.1
 - In CentOS build against compat-boost
