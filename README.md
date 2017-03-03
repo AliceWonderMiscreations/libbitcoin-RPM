@@ -122,6 +122,11 @@ without *anything* in `/usr` breaking __and__ without the RPM database
 becoming inconsistent. That is my philosophy, other system administrators have
 a different philosophy, but I am the one creating these packages.
 
+Feel free to redefine the RPM `%{_prefix}` macro to `/opt/libbitcoin` or
+whatever floats your boat if you do not want this limitation. You will then
+also likely need to change the `pkgconfig` related macro so `configure` knows
+where to find the right `whatever.pc` file.
+
 ## Dependency Build Order
 
 CentOS 7 users will need to create a package repository where the dependencies
