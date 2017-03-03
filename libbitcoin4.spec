@@ -1,22 +1,23 @@
 Name:		libbitcoin4
 Version:	4.0.0
-%define gitdate 20170227
-Release:	0.git.%{gitdate}%{?dist}.1
+%define gitdate 20170302
+Release:	0.git.%{gitdate}%{?dist}.0
 Summary:	Bitcoin Cross-Platform C++ Development Toolkit
 
 Group:		LibBitcoin/Libraries
 License:	AGPLv3
 URL:		https://libbitcoin.org/
-Source0:	c854b0ed5609821a1f490116fac046a648fbb7f50738ead77eb0856fc8f00f87-libbitcoin-master.zip
+Source0:	afa31fe2cf121418c3c21eb17acb0e42dfc414d0a6d50949456ea79dd882518d-libbitcoin-master.zip
 
 BuildRequires:	autoconf automake libtool
-BuildRequires:	boost-devel >= 1.57.0
 BuildRequires:	libsecp256k1-devel >= 0.0.1
 %if 0%{?rhel}
+BuildRequires:	compat-boost-devel >= 1.57.0
 BuildRequires:	compat-libpng-devel >= 2:1.6.27
 BuildRequires:	compat-qrencode-devel >= 3.4.4
 BuildRequires:	compat-libicu-devel >= 51.2
 %else
+BuildRequires:	boost-devel >= 1.57.0
 BuildRequires:	libpng-devel >= 2:1.6.27
 BuildRequires:	qrencode-devel >= 3.4.4
 BuildRequires:	libicu-devel >= 51.2
@@ -114,6 +115,10 @@ make check
 
 
 %changelog
+* Thu Mar 02 2017 Alice Wonder <buildmaster@librelamp.com> - 4.0.0-0.git.20170302.0
+- Update master checkout
+- for CentOS, BuildRequre compat-boost-devel
+
 * Tue Feb 28 2017 Alice Wonder <buildmaster@librelamp.com> - 4.0.0-0.git.20170227.1
 - Rename package to libbitcoin4
 
