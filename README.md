@@ -112,10 +112,12 @@ to build software that links against the CentOS 7 provided boost 1.53.0 then
 you will need to make `boost-devel` is installed. Both can not be installed at
 the same time.
 
+### Why compat devel packages conflict with CentOS version devel packages
+
 I apologize for this inconvenience, but I do not like putting software under
 RPM management in `/opt`. To me, `/opt` is for software packaged by a third
-party vendor outside of the RPM / yum system and software managed by RPM / yum
-should have an install prefix of `/usr`.
+party vendor outside of the RPM / yum system (e.g. TeXLive or Oracle Java) and
+software managed by RPM / yum should have an install prefix of `/usr`.
 
 Basically, it is my opinion that one should always be able to unmount `/opt`
 without *anything* in `/usr` breaking __and__ without the RPM database
@@ -124,8 +126,15 @@ a different philosophy, but I am the one creating these packages.
 
 Feel free to redefine the RPM `%{_prefix}` macro to `/opt/libbitcoin` or
 whatever floats your boat if you do not want this limitation. You will then
-also likely need to change the `pkgconfig` related macro so `configure` knows
+also likely need to change the `pkgconfig` related macros so `configure` knows
 where to find the right `whatever.pc` file.
+
+Finally you will also need to make an entry in `/etc/ld.conf.d/` so `ld` knows
+to look in `/opt/libbitcoin/lib64` (or wherever) for the shared the libraries
+provided by these packages.
+
+Personally I prefer to just use `/usr` even if it means occasionally switching
+which devel package is installed.
 
 ## Dependency Build Order
 
