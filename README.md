@@ -262,3 +262,10 @@ This id the libbitcoin blockchain library. Last build attempt, both the build
 itself and `make check` were successful.
 
 The git project to use: [libbitcoin/libbitcoin-blockchain](https://github.com/libbitcoin/libbitcoin-blockchain)
+
+### libbitcoin4-network.spec
+
+This id the libbitcoin network library. Last build attempt, both the build
+itself and `make check` were successful.
+
+The git project to use: [libbitcoin/libbitcoin-network](https://github.com/libbitcoin/libbitcoin-network)
