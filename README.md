@@ -21,6 +21,8 @@ If you want to build the RPM packages yourself, read on. You need to already
 familiar with how to use the [mock](https://github.com/rpm-software-management/mock/)
 build system.
 
+A sample mock configuration is available in this directory as `libbitcoin-7-x86_64.cfg`
+
 ## CC0 Public Domain
 
 No license is required to use the RPM spec files I created here. I consider the
@@ -31,9 +33,9 @@ However please note that it is considered bad form to remove RPM spec file
 just might cry if I find out, that is all.
 
 Please note that the Public Domain nature only applies to RPM spec files that
-I wrote from scratch (all of the libbitcoin spec files). For many of the other
-RPM spec files, I started with RPM spec files provided by CentOS, EPEL, or
-Fedora.
+I wrote from scratch (all of the libbitcoin spec files). For several (all
+cuurently) of the other RPM spec files, I started with RPM spec files provided
+by CentOS, EPEL, or Fedora.
 
 Obviously I can not apply the CC0 public domain license to those. For RPM
 spec files here where `Alice Wonder` is not the oldest entry in the `changelog`
@@ -78,76 +80,47 @@ Fedora 25 may need some of the same type of special handling that CentOS 7
 requires, but I *think* Fedora 26 (current Rawhide) has new enough packages for
 the various libbitcoin dependencies.
 
-## BOOST and ICU
+## Compatability Packages
 
-The version of [boost](http://www.boost.org/) in CentOS 7 is too old
-to build libbitcoin and the version of [ICU](http://site.icu-project.org/) in
-CentOS 7 is too old for the master development branch of libbitcoin.
+Several of the build dependencies for libbitcoin are newer than the versions of
+those libraries in CentOS. In most of those cases, they seem to be optional
+build dependencies but are still nice to have.
 
-In the case of ICU, the `libicu` package in CentOS 7 is used by too many RPM
-packages for me to consider updating, so a `compat-icu` package is provided
-that will allow shared libraries for both versions to be installed at the same
-time. This way, the CentOS 7 `libicu` package can be left alone.
+In the case of boost, it is a must. CentOS 7 ships with boost 1.53.0 and that
+will not build libbitcoin.
 
-In the case of boost, however, not very many packages on my systems actually
-use the boost library. Most of my servers did not even have boost installed.
+To remedy this issue, I created compatability packages that will allow the
+newer shared libraries from those packages to be installed in parallel with the
+versions of those libraries as supplied by CentOS 7 or by EPEL for CentOS 7.
 
-Thus I decided the best thing to do was simply to update the system boost
-(using the Fedora 26 Rawhide source RPM) and rebuild the RPM packages from
-CentOS 7 and EPEL that I use that did link against boost.
+Please note that I did use a prefix of `/usr` for these compatability packages.
 
-On recent Fedora systems, that should not be an issue, your version of boost
-should already be new enough. However if you are on a CentOS 7 system and you
-do not like the vendor provided boost packages replaced, then feel free to
-solve the boost issue another way (e.g. make a compat package or use the
-software collections).
+That means that while both versions of the shared libraries themselves can be
+installed at the same time, the development packages will conflict and only one
+version of the development packages can be installed at the same time.
 
-You do not have to agree with my decision to replace the CentOS 7 provided
-boost packaging, the beauty of open source is you can choose to do that part
-differently.
+On production systems this is not a problem, production systems should not need
+the development header files.
 
-### Packages that Depend On Boost
+On a workstation where you are building software, however, it does mean you
+will need to pay attention to which devel package is installed so that you do
+not accidentally use the wrong one.
 
-_Fedora users should not have to worry about this section_
+For example, if you intend to compile software that links against boost 1.58.0
+then you need to make sure `compat-boost-devel` is installed, but if you intend
+to build software that links against the CentOS 7 provided boost 1.53.0 then
+you will need to make `boost-devel` is installed. Both can not be installed at
+the same time.
 
-If you have a desktop environment installed it is quite likely you have a small
-number of packages on your system that are linked against the boost libraries.
+I apologize for this inconvenience, but I do not like putting software under
+RPM management in `/opt`. To me, `/opt` is for software packaged by a third
+party vendor outside of the RPM / yum system and software managed by RPM / yum
+should have an install prefix of `/usr`.
 
-You can find out what they are with the following command:
-
-    rpm -qa --queryformat "%{name} \n" |grep "^boost" \
-      |while read line; do
-        rpm --test -e "${line}" >> boost-dependant.txt 2>&1
-      done
-
-The resulting file `boost-dependant.txt` will help you understand what packages
-currently on your system are linked against the version of boost that CentOS 7
-ships with.
-
-You will need to rebuild those packages against the newer boost.
-
-The source RPM for those packages will rebuild against the newer boost without
-any issues with one exception:
-
-* LibreOffice
-
-For LibreOffice, please see the [LibreOffice](./LibreOffice.md) file.
-
-
-## Other Compat Packages
-
-_Fedora users should not have to worry about this section_
-
-In addition to boost and ICU there are a few other build dependencies where the
-version in CentOS 7 is not new enough:
-
-* libpng
-* qrencode
-* zeromq
-
-In those cases I have spec files for compatability packages that allow the
-shared library for the needed version to be installed in parallel with the
-shared libeary that CentOS ships with.
+Basically, it is my opinion that one should always be able to unmount `/opt`
+without *anything* in `/usr` breaking __and__ without the RPM database
+becoming inconsistent. That is my philosophy, other system administrators have
+a different philosophy, but I am the one creating these packages.
 
 ## Dependency Build Order
 
@@ -161,9 +134,12 @@ Build the dependencies in the following order:
 
 * `compat-icu`
 * `compat-libpng`
-* `compat-qrencodelibs`
+* `compat-qrencode-libs`
 * `compat-zeromq`
-* `boost`
+* `compat-boost`
+
+Once those packages are built, the package repository they are in should be
+suitable for building libbitcoin in mock.
 
 
 
