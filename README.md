@@ -83,7 +83,7 @@ type of special handling that CentOS 7 requires, accomplished with the
 ### Install Prefix Notes
 
 By default, RPM and the mock build system will use `/usr` as the install
-prefix. Some system administrators may prefer a prefix with `/opt`, such as
+prefix. Some system administrators may prefer a prefix within `/opt`, such as
 `/opt/libbitcoin` or whatever.
 
 Using `/usr` is what I do. If that is fine with you too, then you can skip the
@@ -95,17 +95,19 @@ For example:
 
     mock -D '_prefix /opt/libbitcoin' \
       -D '_datadir /usr/share' \
-      -r libbitcoin-7-x86_64 compat-libpng-1.6.28-2.el7.centos.0.src.rpm`
+      -r libbitcoin-7-x86_64 \
+      compat-libpng-1.6.28-2.el7.centos.0.src.rpm
 
-You probably will need to redefine more than just the `_prefix` macro, you will
-need to make sure the `pkgconfig` utility knows to look for dependencies within
-the `/opt/libbitcoin` prefix as well as within the `/usr` prefix, and you may
-need to define a macro so that `/sbin/ldconfig` inside the mock buildroot knows
-to look for shared libraries there too.
+You *probably* will need to redefine a few other macros so that the `pkgconfig`
+utility looks within `/opt/libbitcoin/path` before looking in `/usr/path` etc.
 
-You will need to create a file within the `/etc/ld.so.conf.d/` on your
-filesystem when you install the packages so the shared libraries can be found
-without needing to resort to an rpath in executables that need to load them.
+When installing packages built with an alternate `_prefix` you will need to
+create a file within the `/etc/ld.so.conf.d/` directory on your filesystem so
+the shared libraries can be found without needing to resort to an rpath. For
+example, a file containing the following:
+
+    #library path for libbitcoin packages
+    /opt/libbitcoin/lib64
 
 ## Compatibility Packages
 
