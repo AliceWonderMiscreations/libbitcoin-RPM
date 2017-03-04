@@ -102,8 +102,8 @@ However before you build any of the packages, you *must* first build the
 `libbitcoin-prefix-setup.spec` spec file using the same `%{_prefix}` you will
 be using to build the packages.
 
-That package creates a file in `/etc/ld.so.conf/` and sets up an RPM macro for
-making sure the `PKG_CONFIG_PATH` is sane.
+That package creates a file in `/etc/ld.so.conf.d/` and sets up an RPM macro in
+`/lib/rpm/macros.d/` for making sure the `PKG_CONFIG_PATH` is sane.
 
 You only need to build that spec file if you are changing the install root for
 where the packages install.
@@ -111,7 +111,7 @@ where the packages install.
 ## Compatibility Packages
 
 Several of the build dependencies for libbitcoin are newer than the versions of
-those libraries in CentOS. In most of those cases, they seem to be optional
+those libraries in CentOS 7. In most of those cases, they seem to be optional
 build dependencies but are still nice to have.
 
 In the case of boost, it is a must. CentOS 7 ships with boost 1.53.0 and that
