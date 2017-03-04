@@ -98,19 +98,15 @@ For example:
       -r libbitcoin-7-x86_64 \
       compat-libpng-1.6.28-2.el7.centos.0.src.rpm
 
-You *probably* will need to redefine a few other macros so that the `pkgconfig`
-utility looks within `/opt/libbitcoin/path` before looking in `/usr/path` etc.
+However before you build any of the packages, you *must* first build the
+`libbitcoin-prefix-setup.spec` spec file using the same `%{_prefix}` you will
+be using to build the packages.
 
-When installing packages built with an alternate `_prefix` you will need to
-create a file within the `/etc/ld.so.conf.d/` directory on your filesystem so
-the shared libraries can be found without needing to resort to an rpath. For
-example, a file containing the following:
+That package creates a file in `/etc/ld.so.conf/` and sets up an RPM macro for
+making sure the `PKG_CONFIG_PATH` is sane.
 
-    #library path for libbitcoin packages
-    /opt/libbitcoin/lib64
-
-If you want easy access to any man pages installed, you will have to adjust
-your `MANPATH` to reflect the alternate install prefix as well.
+You only need to build that spec file if you are changing the install root for
+where the packages install.
 
 ## Compatibility Packages
 
@@ -214,6 +210,13 @@ This is the core library for libbitcoin. Last build attempt, both the build
 itself and `make check` were successful.
 
 The git project to use: [libbitcoin/libbitcoin](https://github.com/libbitcoin/libbitcoin)
+
+__note:__ This package fails to pass `make check` if using a custom `%{_prefix}`
+and the `--with-icu` option was passed to configure.
+
+I have not tracked the issue down yet but I suspect it is a bug with how
+`compat-icu` is packaged that only shows itself when using a custom prefix. I
+do not believe it is a bug with libbitcoin.
 
 ### libbitcoin4-protocol.spec
 
