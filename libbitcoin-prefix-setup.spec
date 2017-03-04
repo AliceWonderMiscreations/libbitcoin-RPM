@@ -1,6 +1,6 @@
 Name:		libbitcoin-prefix-setup
 Version:	1
-Release:	1
+Release:	1.1
 Summary:	Configuration files for libbitcoin install path
 
 Group:		LibBitcoin/Misc
@@ -14,7 +14,7 @@ This package installs a configuration file into /etc/ld.so.conf.d/ that allows
 %package devel
 Summary:	PKG_CONFIG_PATH macro
 Group:		LibBitcoin/Misc
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{version}-%{release}
 
 %description devel
 This package contains an RPM macro file that allows us to intelligently define
@@ -23,6 +23,16 @@ PKG_CONFIG_PATH when building RPM packages that are not related to libbitcoin.
 
 Ideally this package will only be installed in the mock buildroot but it can be
 installed on the system itself without causing any harm.
+
+%package -n libbitcoin-prefix-python
+Summary:	Python path support
+Group:		LibBitcoin/Python
+Requires:	%{name} = %{version}-%{release}
+Provides:	libbitcoin-prefix-python2 = %{version}-%{release}
+
+%description -n libbitcoin-prefix-python
+This package adds support for libbitcoin-related python packages that are
+installed with a custom %%{_prefix}.
 
 %prep
 
@@ -43,9 +53,14 @@ cat <<EOF > %{buildroot}%{_sysconfdir}/ld.so.conf.d/libbitcoin.conf
 EOF
 
 mkdir -p %{buildroot}%{_usr}/lib/rpm/macros.d
-cat <<EOF > %{buildroot}%{_usr}/lib/rpm/macros.d/macros.libbitcoin
+cat <<EOF > %{buildroot}%{_usr}/lib/rpm/macros.d/macros.btcpkgconfig
 #Attempt to set sane pkgconfig path
-%%_btc_pkgconfig %%{_libdir}/pkgconfig:%%{_usr}/%%{_lib}/pkgconfig:%%{_usr}/share/pkgconfig
+%%btc_pkgconfig %%{_libdir}/pkgconfig:%%{_usr}/%%{_lib}/pkgconfig:%%{_usr}/share/pkgconfig
+EOF
+
+cat <<EOF > %{buildroot}%{_usr}/lib/rpm/macros.d/macros.btcpython2
+%%btc_py2_sitelib %%{_prefix}/lib/python%%{python2_version}/site-packages
+%%btc_py2_sitearch %%{_prefix}/%{_lib}/python%%{python2_version}/site-packages
 EOF
 
 #These scriptlets are not really needed but they also do not hurt.
@@ -58,9 +73,16 @@ EOF
 %attr(0644,root,root) %config %{_sysconfdir}/ld.so.conf.d/libbitcoin.conf
 
 %files devel
-%attr(0644,root,root) %{_usr}/lib/rpm/macros.d/macros.libbitcoin
+%attr(0644,root,root) %{_usr}/lib/rpm/macros.d/macros.btcpkgconfig
+
+%files -n libbitcoin-prefix-python
+%attr(0644,root,root) %{_usr}/lib/rpm/macros.d/macros.btcpython2
 
 
 %changelog
+* Sat Mar 04 2017 Alice Wonder <buildmaster@librelamp.com> - 1-1.1
+- Do not start custom macros with an underscore
+- Add python sub-package to provide custom prefix support with python
+
 * Fri Mar 03 2017 Alice Wonder <buildmaster@librelamp.com> - 1-1
 - Initial RPM spec file
