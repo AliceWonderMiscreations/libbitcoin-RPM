@@ -48,8 +48,8 @@ build software that links against %{name}.
 
 
 %build
-%if 0%{?_btc_pkgconfig:1}%{!?_btc_pkgconfig:0}
-  PKG_CONFIG_PATH="%{_btc_pkgconfig}"
+%if 0%{?btc_pkgconfig:1}%{!?btc_pkgconfig:0}
+  PKG_CONFIG_PATH="%{btc_pkgconfig}"
   export PKG_CONFIG_PATH
 %endif
 %configure --enable-module-recovery
