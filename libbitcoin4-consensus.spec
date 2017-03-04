@@ -1,7 +1,7 @@
 Name:		libbitcoin4-consensus
 Version:	4.0.0
 %define gitdate 20170228
-Release:	0.git.%{gitdate}%{?dist}.2
+Release:	0.git.%{gitdate}%{?dist}.3
 Summary:	Bitcoin consensus library
 
 Group:		LibBitcoin/Libraries
@@ -23,6 +23,11 @@ BuildRequires:	python3-devel
 %if "%{_prefix}" != "/usr"
 BuildRequires: libbitcoin-prefix-setup-devel
 Requires:      libbitcoin-prefix-setup
+%if 0%{?rhel}
+BuildRequires:	libbitcoin-prefix-python
+%else
+BuildRequires:	libbitcoin-prefix-python3
+%endif
 %endif
 
 
@@ -63,9 +68,15 @@ that use the Java JAR file.
 %if 0%{?rhel}
 %package python
 Summary:	Python bindings for %{name}
+%if "%{_prefix}" != "/usr"
+Requires:	libbitcoin-prefix-python
+%endif #end inner if
 %else
 %package python3
 Summary:        Python3 bindings for %{name}
+%if "%{_prefix}" != "/usr"
+Requires:       libbitcoin-prefix-python3
+%endif #end inner if
 %endif
 Group:		LibBitcoin/Libraries
 Requires:	%{name} = %{version}-%{release}
@@ -84,8 +95,8 @@ This package provides the python3 bindings for %{name}.
 
 
 %build
-%if 0%{?_btc_pkgconfig:1}%{!?_btc_pkgconfig:0}
-  PKG_CONFIG_PATH="%{_btc_pkgconfig}"
+%if 0%{?btc_pkgconfig:1}%{!?btc_pkgconfig:0}
+  PKG_CONFIG_PATH="%{btc_pkgconfig}"
   export PKG_CONFIG_PATH
 %endif
 %configure --with-java --with-python %{?_with_boost} %{?_boost_libdir}
@@ -131,23 +142,30 @@ make check
 %if 0%{?rhel}
 %files python
 %defattr(-,root,root,-)
-# need a better way
-%if "%{_prefix}" == "/usr"
+%if 0%{?btc_py2_sitelib:1}%{!?btc_py2_sitelib:0}
+%{btc_py2_sitelib}/*
+%{btc_py2_sitearch}/*
+%else
 %{python2_sitelib}/*
 %{python2_sitearch}/*
-%else
-%{_prefix}/lib/python2.7/site-packages/*
-%{_libdir}/python2.7/*
-%endif
+%endif #end inner if
 %else
 %files python3
 %defattr(-,root,root,-)
+%if 0%{?btc_py3_sitelib:1}%{!?btc_py3_sitelib:0}
+%{btc_py3_sitelib}/*
+%{btc_py3_sitearch}/*
+%else
 %{python3_sitelib}/*
 %{python3_sitearch}/*
+%endif #end inner if
 %endif
 
 
 %changelog
+* Sat Mar 04 2017 Alice Wonder <buildmaster@librelamp.com> - 4.0.0-0.git.20170228.3
+- Better handling of the python files
+
 * Fri Mar 03 2017 Alice Wonder <buildmaster@librelamp.com> - 4.0.0-0.git.20170228.2
 - Fix for defining an alternate %%_prefix at build time.
 - Optional macro for defining --with-boost and --with-boost-libdir configure option
