@@ -1,6 +1,6 @@
 Name:      compat-icu
 Version:   56.1
-Release:   7%{?dist}.1
+Release:   7%{?dist}.2
 Summary:   International Components for Unicode
 Group:     Development/Tools
 License:   MIT and UCD and Public Domain
@@ -8,6 +8,9 @@ URL:       http://www.icu-project.org/
 Source0:   http://download.icu-project.org/files/icu4c/56.1/icu4c-56_1-src.tgz
 Source1:   icu-config.sh
 BuildRequires: doxygen, autoconf, python
+%if "%{_prefix}" != "/usr"
+BuildRequires: libbitcoin-prefix-setup-devel
+%endif
 Requires: compat-libicu%{?_isa} = %{version}-%{release}
 
 Patch1: icu.8198.revert.icu5431.patch
@@ -25,6 +28,9 @@ Tools and utilities for developing with icu.
 %package -n compat-libicu
 Summary: International Components for Unicode - libraries
 Group:   System Environment/Libraries
+%if "%{_prefix}" != "/usr"
+Requires: libbitcoin-prefix-setup
+%endif
 
 %description -n compat-libicu
 The International Components for Unicode (ICU) libraries provide
@@ -65,6 +71,12 @@ Includes and definitions for developing with icu.
 
 %build
 cd source
+
+%if 0%{?_btc_pkgconfig:1}%{!?_btc_pkgconfig:0}
+  PKG_CONFIG_PATH="%{_btc_pkgconfig}"
+  export PKG_CONFIG_PATH
+%endif
+
 autoconf
 CFLAGS='%optflags -fno-strict-aliasing'
 CXXFLAGS='%optflags -fno-strict-aliasing'
@@ -164,6 +176,9 @@ make %{?_smp_mflags} -C source check
 
 
 %changelog
+* Fri Mar 03 2017 Alice Wonder <buildmaster@librelamp.com> - 56.1-7.2
+- Allow definition of alternate %%{_prefix} at package build time
+
 * Mon Feb 27 2017 Alice Wonder <buildmaster@librelamp.com> - 56.1-7.1
 - Build as compat package for CentOS 7, do not package docs
 

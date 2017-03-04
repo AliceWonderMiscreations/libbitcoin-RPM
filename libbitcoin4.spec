@@ -1,7 +1,7 @@
 Name:		libbitcoin4
 Version:	4.0.0
 %define gitdate 20170302
-Release:	0.git.%{gitdate}%{?dist}.1
+Release:	0.git.%{gitdate}%{?dist}.2
 Summary:	Bitcoin Cross-Platform C++ Development Toolkit
 
 Group:		LibBitcoin/Libraries
@@ -22,6 +22,10 @@ BuildRequires:	libpng-devel >= 2:1.6.27
 BuildRequires:	qrencode-devel >= 3.4.4
 BuildRequires:	libicu-devel >= 51.2
 %endif
+%if "%{_prefix}" != "/usr"
+BuildRequires: libbitcoin-prefix-setup-devel
+Requires:      libbitcoin-prefix-setup
+%endif
 
 %description
 The libbitcoin toolkit is a set of cross platform C++ libraries for building
@@ -32,6 +36,16 @@ depend on the foundational libbitcoin library.
 Summary:	Development package for %{name}
 Group:		LibBitcoin/Development
 Requires:	%{name} = %{version}-%{release}
+Requires:	libbitcoin-libsecp256k1-devel
+%if %{?rhel}
+Requires:	compat-libpng-devel >= 2:1.6.27
+Requires:	compat-qrencode-devel >= 3.4.4
+Requires:	compat-libicu-devel >= 51.2
+%else
+Requires:	libpng-devel >= 2:1.6.27
+Requires:	qrencode-devel >= 3.4.4
+Requires:	libicu-devel >= 51.2
+%endif
 
 %description devel
 This package contains the development header files and libraries needed to
@@ -44,7 +58,15 @@ compile software that links against %{name}.
 
 
 %build
-%configure --without-examples --with-icu --with-png --with-qrencode %{?_with_boost}
+%if 0%{?_btc_pkgconfig:1}%{!?_btc_pkgconfig:0}
+  PKG_CONFIG_PATH="%{_btc_pkgconfig}"
+  export PKG_CONFIG_PATH
+%endif
+%if "%{_prefix}" == "/usr"
+%configure --without-examples --with-icu --with-png --with-qrencode %{?_with_boost} %{?_boost_libdir}
+%else
+%configure --without-examples --without-icu --with-png --with-qrencode %{?_with_boost} %{?_boost_libdir}
+%endif
 make %{?_smp_mflags}
 
 
@@ -115,9 +137,10 @@ make check
 
 
 %changelog
-* Fri Mar 03 2017 Alice Wonder <buildmaster@librelamp.com> - 4.0.0-0.git.20170302.1
+* Fri Mar 03 2017 Alice Wonder <buildmaster@librelamp.com> - 4.0.0-0.git.20170302.2
 - Fix for defining an alternate %%_prefix at build time.
-- Optional macro for defining --with-boost configure option
+- Optional macro for defining --with-boost and --with-boost-libdir configure option
+- Disable icu when using custom prefix (FIXME)
 
 * Thu Mar 02 2017 Alice Wonder <buildmaster@librelamp.com> - 4.0.0-0.git.20170302.0
 - Update master checkout

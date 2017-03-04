@@ -10,13 +10,18 @@ URL:		https://libbitcoin.org/
 Source0:	871fb7141d1f71ba3b26223e0b95c1c1b9883a82fc7a12d475def4577187ed1b-libbitcoin-protocol-master.zip
 
 BuildRequires:	autoconf automake libtool
-BuildRequires:	boost-devel >= 1.57.0
 %if 0%{?rhel}
+BuildRequires:	compat-boost-devel >= 1.57.0
 BuildRequires:	compat-zeromq-devel >= 4.2.0
 %else
+BuildRequires:	boost-devel >= 1.57.0
 BuildRequires:	zeromq-devel >= 4.2.0
 %endif
 BuildRequires:	libbitcoin4-devel
+%if "%{_prefix}" != "/usr"
+BuildRequires: libbitcoin-prefix-setup-devel
+Requires:      libbitcoin-prefix-setup
+%endif
 
 %description
 A library for querying the Bitcoin Blockchain via Libbitcoin.
@@ -43,7 +48,11 @@ compile software that links against %{name}.
 
 
 %build
-%configure %{?_with_boost}
+%if 0%{?_btc_pkgconfig:1}%{!?_btc_pkgconfig:0}
+  PKG_CONFIG_PATH="%{_btc_pkgconfig}"
+  export PKG_CONFIG_PATH
+%endif
+%configure %{?_with_boost} %{?_boost_libdir}
 make %{?_smp_mflags}
 
 
@@ -82,7 +91,7 @@ make check
 %changelog
 * Fri Mar 03 2017 Alice Wonder <buildmaster@librelamp.com> - 4.0.0-0.git.20170228.2
 - Fix for defining an alternate %%_prefix at build time.
-- Optional macro for defining --with-boost configure option
+- Optional macro for defining --with-boost and --with-boost-libdir configure option
 
 * Tue Feb 28 2017 Alice Wonder <buildmaster@librelamp.com> - 4.0.0-0.git.20170228.1
 - Change name to libbitcoin4-protocol due to devel rather than stable nature.

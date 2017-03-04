@@ -16,6 +16,10 @@ BuildRequires:	compat-boost-devel >= 1.57.0
 %else
 BuildRequires:	boost-devel >= 1.57.0
 %endif
+%if "%{_prefix}" != "/usr"
+BuildRequires: libbitcoin-prefix-setup-devel
+Requires:      libbitcoin-prefix-setup
+%endif
 
 %description
 Libbitcoin Network is a partial implementation of the Bitcoin P2P network
@@ -42,7 +46,11 @@ compile software that links against %{name}.
 
 
 %build
-%configure %{?_with_boost}
+%if 0%{?_btc_pkgconfig:1}%{!?_btc_pkgconfig:0}
+  PKG_CONFIG_PATH="%{_btc_pkgconfig}"
+  export PKG_CONFIG_PATH
+%endif
+%configure %{?_with_boost} %{?_boost_libdir}
 make %{?_smp_mflags}
 
 
@@ -83,7 +91,7 @@ make check
 %changelog
 * Fri Mar 03 2017 Alice Wonder <buildmaster@librelamp.com> - 4.0.0-0.git.20170303.1
 - Fix for defining an alternate %%_prefix at build time.
-- Optional macro for defining --with-boost configure option
+- Optional macro for defining --with-boost and --with-boost-libdir configure option
 
 * Fri Mar 03 2017 Alice Wonder <buildmaster@librelamp.com> - 4.0.0-0.git.20170303.0
 - Initial RPM spec file.

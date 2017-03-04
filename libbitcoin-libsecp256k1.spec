@@ -12,6 +12,10 @@ Source0:	aca1a501c0ab6e416a63010c039268b9bac52829a93e267a5ba23cbb883b31d3-secp25
 Provides:	libsecp256k1 = %{version}
 
 BuildRequires: automake autoconf libtool
+%if "%{_prefix}" != "/usr"
+BuildRequires: libbitcoin-prefix-setup-devel
+Requires:      libbitcoin-prefix-setup
+%endif
 
 %description
 Optimized C library for EC operations on curve secp256k1.
@@ -44,6 +48,10 @@ build software that links against %{name}.
 
 
 %build
+%if 0%{?_btc_pkgconfig:1}%{!?_btc_pkgconfig:0}
+  PKG_CONFIG_PATH="%{_btc_pkgconfig}"
+  export PKG_CONFIG_PATH
+%endif
 %configure --enable-module-recovery
 make %{?_smp_mflags}
 
@@ -76,6 +84,7 @@ make check
 %changelog
 * Fri Mar 03 2017 Alice Wonder <buildmaster@librelamp.com> - 0.1-0.git.20170226.2
 - Remove boost macro, this package doesn't use boost
+- Properly set up for custom %%{_prefix}
 
 * Fri Mar 03 2017 Alice Wonder <buildmaster@librelamp.com> - 0.1-0.git.20170226.1
 - Add macro for optional setting of boost path

@@ -5,21 +5,22 @@
 %define boost_docdir __tmp_docdir
 %define boost_examplesdir __tmp_examplesdir
 
-%ifarch %{arm} ppc64le
-  %bcond_with mpich
-%else
-  %bcond_without mpich
-%endif
+# do not build mpich or openmpi for compat package
+#%%ifarch %%{arm} ppc64le
+#  %%bcond_with mpich
+#%%else
+#  %%bcond_without mpich
+#%%endif
 
-%ifarch s390 s390x %{arm} ppc64le
+#%%ifarch s390 s390x %%{arm} ppc64le
   # No OpenMPI support on these arches
-  %bcond_with openmpi
-%else
-  %bcond_without openmpi
-%endif
+#  %%bcond_with openmpi
+#%%else
+#  %%bcond_without openmpi
+#%%endif
 
-#%%bcond_with mpich
-#%%bcond_with openmpi
+%bcond_with mpich
+%bcond_with openmpi
 
 %ifnarch %{ix86} x86_64
   # Avoid using Boost.Context on non-x86 arches.  s390 is not
@@ -37,7 +38,7 @@ Name: compat-boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.58.0
 %define version_enc 1_58_0
-Release: 1%{?dist}.1
+Release: 2%{?dist}
 License: Boost and MIT and Python
 
 %define toplev_dirname boost_%{version_enc}
@@ -94,6 +95,9 @@ BuildRequires: compat-libicu-devel
 BuildRequires: libicu-devel
 %endif
 BuildRequires: chrpath
+%if "%{_prefix}" != "/usr"
+BuildRequires: libbitcoin-prefix-setup-devel
+%endif
 
 # https://svn.boost.org/trac/boost/ticket/6150
 Patch4: boost-1.50.0-fix-non-utf8-files.patch
@@ -164,6 +168,9 @@ in future standards.)
 %package atomic
 Summary: Run-Time component of boost atomic library
 Group: System Environment/Libraries
+%if "%{_prefix}" != "/usr"
+Requires: libbitcoin-prefix-setup
+%endif
 
 %description atomic
 
@@ -176,6 +183,9 @@ variables.
 Summary: Run-Time component of boost chrono library
 Group: System Environment/Libraries
 Requires: compat-boost-system%{?_isa} = %{version}-%{release}
+%if "%{_prefix}" != "/usr"
+Requires: libbitcoin-prefix-setup
+%endif
 
 %description chrono
 
@@ -184,6 +194,9 @@ Run-Time support for Boost.Chrono, a set of useful time utilities.
 %package container
 Summary: Run-time component of boost container library
 Group: System Environment/Libraries
+%if "%{_prefix}" != "/usr"
+Requires: libbitcoin-prefix-setup
+%endif
 
 %description container
 
@@ -197,6 +210,9 @@ standard draft features for compilers that comply with C++03.
 %package context
 Summary: Run-Time component of boost context switching library
 Group: System Environment/Libraries
+%if "%{_prefix}" != "/usr"
+Requires: libbitcoin-prefix-setup
+%endif
 
 %description context
 
@@ -206,6 +222,9 @@ provides a sort of cooperative multitasking on a single thread.
 %package coroutine
 Summary: Run-time component of boost coroutine library
 Group: System Environment/Libraries
+%if "%{_prefix}" != "/usr"
+Requires: libbitcoin-prefix-setup
+%endif
 
 %description coroutine
 Run-time support for Boost.Coroutine, a library that provides
@@ -216,6 +235,9 @@ suspending and resuming execution.
 %package date-time
 Summary: Run-Time component of boost date-time library
 Group: System Environment/Libraries
+%if "%{_prefix}" != "/usr"
+Requires: libbitcoin-prefix-setup
+%endif
 
 %description date-time
 
@@ -226,6 +248,9 @@ on generic programming concepts.
 Summary: Run-Time component of boost filesystem library
 Group: System Environment/Libraries
 Requires: compat-boost-system%{?_isa} = %{version}-%{release}
+%if "%{_prefix}" != "/usr"
+Requires: libbitcoin-prefix-setup
+%endif
 
 %description filesystem
 
@@ -237,6 +262,9 @@ directories.
 Summary: Run-Time component of boost graph library
 Group: System Environment/Libraries
 Requires: compat-boost-regex%{?_isa} = %{version}-%{release}
+%if "%{_prefix}" != "/usr"
+Requires: libbitcoin-prefix-setup
+%endif
 
 %description graph
 
@@ -247,6 +275,9 @@ Library (STL).
 %package iostreams
 Summary: Run-Time component of boost iostreams library
 Group: System Environment/Libraries
+%if "%{_prefix}" != "/usr"
+Requires: libbitcoin-prefix-setup
+%endif
 
 %description iostreams
 
@@ -259,6 +290,9 @@ Group: System Environment/Libraries
 Requires: compat-boost-chrono%{?_isa} = %{version}-%{release}
 Requires: compat-boost-system%{?_isa} = %{version}-%{release}
 Requires: compat-boost-thread%{?_isa} = %{version}-%{release}
+%if "%{_prefix}" != "/usr"
+Requires: libbitcoin-prefix-setup
+%endif
 
 %description locale
 
@@ -268,6 +302,9 @@ handling tools.
 %package log
 Summary: Run-time component of boost logging library
 Group: System Environment/Libraries
+%if "%{_prefix}" != "/usr"
+Requires: libbitcoin-prefix-setup
+%endif
 
 %description log
 
@@ -278,6 +315,9 @@ tools along with public interfaces for extending the library.
 %package math
 Summary: Math functions for boost TR1 library
 Group: System Environment/Libraries
+%if "%{_prefix}" != "/usr"
+Requires: libbitcoin-prefix-setup
+%endif
 
 %description math
 
@@ -287,6 +327,9 @@ portion of Boost.TR1.
 %package program-options
 Summary:  Run-Time component of boost program_options library
 Group: System Environment/Libraries
+%if "%{_prefix}" != "/usr"
+Requires: libbitcoin-prefix-setup
+%endif
 
 %description program-options
 
@@ -297,6 +340,9 @@ conventional methods such as command line and configuration file.
 %package python
 Summary: Run-Time component of boost python library
 Group: System Environment/Libraries
+%if "%{_prefix}" != "/usr"
+Requires: libbitcoin-prefix-setup
+%endif
 
 %description python
 
@@ -311,6 +357,9 @@ support for Boost Python Library.
 %package python3
 Summary: Run-Time component of boost python library for Python 3
 Group: System Environment/Libraries
+%if "%{_prefix}" != "/usr"
+Requires: libbitcoin-prefix-setup
+%endif
 
 %description python3
 
@@ -335,6 +384,9 @@ Shared object symbolic links for Python 3 variant of Boost.Python.
 %package random
 Summary: Run-Time component of boost random library
 Group: System Environment/Libraries
+%if "%{_prefix}" != "/usr"
+Requires: libbitcoin-prefix-setup
+%endif
 
 %description random
 
@@ -343,6 +395,9 @@ Run-Time support for boost random library.
 %package regex
 Summary: Run-Time component of boost regular expression library
 Group: System Environment/Libraries
+%if "%{_prefix}" != "/usr"
+Requires: libbitcoin-prefix-setup
+%endif
 
 %description regex
 
@@ -351,6 +406,9 @@ Run-Time support for boost regular expression library.
 %package serialization
 Summary: Run-Time component of boost serialization library
 Group: System Environment/Libraries
+%if "%{_prefix}" != "/usr"
+Requires: libbitcoin-prefix-setup
+%endif
 
 %description serialization
 
@@ -359,6 +417,9 @@ Run-Time support for serialization for persistence and marshaling.
 %package signals
 Summary: Run-Time component of boost signals and slots library
 Group: System Environment/Libraries
+%if "%{_prefix}" != "/usr"
+Requires: libbitcoin-prefix-setup
+%endif
 
 %description signals
 
@@ -367,6 +428,9 @@ Run-Time support for managed signals & slots callback implementation.
 %package system
 Summary: Run-Time component of boost system support library
 Group: System Environment/Libraries
+%if "%{_prefix}" != "/usr"
+Requires: libbitcoin-prefix-setup
+%endif
 
 %description system
 
@@ -377,6 +441,9 @@ library.
 %package test
 Summary: Run-Time component of boost test library
 Group: System Environment/Libraries
+%if "%{_prefix}" != "/usr"
+Requires: libbitcoin-prefix-setup
+%endif
 
 %description test
 
@@ -387,6 +454,9 @@ program execution monitoring.
 Summary: Run-Time component of boost thread library
 Group: System Environment/Libraries
 Requires: compat-boost-system%{?_isa} = %{version}-%{release}
+%if "%{_prefix}" != "/usr"
+Requires: libbitcoin-prefix-setup
+%endif
 
 %description thread
 
@@ -400,6 +470,9 @@ Summary: Run-Time component of boost timer library
 Group: System Environment/Libraries
 Requires: compat-boost-chrono%{?_isa} = %{version}-%{release}
 Requires: compat-boost-system%{?_isa} = %{version}-%{release}
+%if "%{_prefix}" != "/usr"
+Requires: libbitcoin-prefix-setup
+%endif
 
 %description timer
 
@@ -415,6 +488,9 @@ Requires: compat-boost-date-time%{?_isa} = %{version}-%{release}
 Requires: compat-boost-filesystem%{?_isa} = %{version}-%{release}
 Requires: compat-boost-system%{?_isa} = %{version}-%{release}
 Requires: compat-boost-thread%{?_isa} = %{version}-%{release}
+%if "%{_prefix}" != "/usr"
+Requires: libbitcoin-prefix-setup
+%endif
 
 %description wave
 
@@ -634,6 +710,11 @@ a number of significant features and is now developed independently
 : PYTHON3_ABIFLAGS=%{python3_abiflags}
 %endif
 
+%if 0%{?_btc_pkgconfig:1}%{!?_btc_pkgconfig:0}
+  PKG_CONFIG_PATH="%{_btc_pkgconfig}"
+  export PKG_CONFIG_PATH
+%endif
+
 cat >> ./tools/build/src/user-config.jam << EOF
 import os ;
 local RPM_OPT_FLAGS = [ os.environ RPM_OPT_FLAGS ] ;
@@ -718,6 +799,17 @@ echo ============================= build Boost.Build ==================
 
 %install
 rm -rf $RPM_BUILD_ROOT
+
+%if "%{_prefix}" != "/usr"
+# create macro file for packages that need this boost
+mkdir -p %{buildroot}%{_usr}/lib/rpm/macros.d
+
+cat <<EOF > %{buildroot}%{_usr}/lib/rpm/macros.d/macros.boostcompat
+%%_boostprefix %{_prefix}
+%%_with_boost --with-boost=%{_prefix}
+%%_boost_libdir --with-boost-libdir=%{_libdir}
+EOF
+%endif
 
 cd %{_builddir}/%{toplev_dirname}
 
@@ -1125,6 +1217,9 @@ rm -rf $RPM_BUILD_ROOT
 %files devel
 %defattr(-,root,root,-)
 %license LICENSE_1_0.txt
+%if "%{_prefix}" != "/usr"
+%{_usr}/lib/rpm/macros.d/macros.boostcompat
+%endif
 %{_includedir}/boost
 %{_libdir}/libboost_atomic*.so
 %{_libdir}/libboost_chrono*.so
@@ -1227,7 +1322,7 @@ rm -rf $RPM_BUILD_ROOT
 %files build
 %defattr(-,root,root,-)
 %license LICENSE_1_0.txt
-%{_datadir}/boost-build/
+%{_prefix}/share/boost-build/
 
 %files jam
 %defattr(-,root,root,-)
@@ -1236,6 +1331,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Fri Mar 03 2017 Alice Wonder <buildmaster@librelamp.com> - 1.58.0-2
+- Disable openmpi and mpich
+- Install an RPM macro file with -devel package iff %%_prefix != /usr
+- Properly support custom %%{_prefix} build / install
+
 * Fri Mar 03 2017 Alice Wonder <buildmaster@librelamp.com> - 1.58.0-1.1
 - Partial fix to https://github.com/AliceWonderMiscreations/libbitcoin-RPM/issues/2
 -  mpich and openmpi still install libraries in wrong directory when

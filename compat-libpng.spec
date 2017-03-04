@@ -2,7 +2,7 @@ Summary:       A library of functions for manipulating PNG image format files
 Name:          compat-libpng
 Epoch:         2
 Version:       1.6.28
-Release:       2%{?dist}.0
+Release:       2%{?dist}.1
 License:       zlib
 Group:         System Environment/Libraries
 URL:           http://www.libpng.org/pub/png/
@@ -17,6 +17,10 @@ Patch1:        libpng-fix-arm-neon.patch
 
 BuildRequires: zlib-devel
 BuildRequires: autoconf automake libtool
+%if "%{_prefix}" != "/usr"
+BuildRequires: libbitcoin-prefix-setup-devel
+Requires:      libbitcoin-prefix-setup
+%endif
 
 %description
 The libpng package contains a library of functions for creating and
@@ -61,6 +65,10 @@ cp -p %{SOURCE1} .
 %patch1 -p1 -b .arm
 
 %build
+%if 0%{?_btc_pkgconfig:1}%{!?_btc_pkgconfig:0}
+  PKG_CONFIG_PATH="%{_btc_pkgconfig}"
+  export PKG_CONFIG_PATH
+%endif
 autoreconf -vif
 %configure
 make %{?_smp_mflags} DFA_XTRA=pngusr.dfa
@@ -99,6 +107,9 @@ make check
 
 
 %changelog
+* Fri Mar 03 2017 Alice Wonder <buildmaster@librelamp.com> - 2:1.6.28-2.1
+- Allow for building with a custom %%{_prefix}
+
 * Mon Feb 27 2017 Alice Wonder <buildmaster@librelamp.com> - 2:1.6.28-2.0
 - Build as compat package for CentOS 7
 - Do not package man pages or tools (file conflict)

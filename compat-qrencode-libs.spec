@@ -1,6 +1,6 @@
 Name:           compat-qrencode-libs
 Version:        3.4.4
-Release:        1%{?dist}
+Release:        1%{?dist}.1
 Summary:        QR Code encoding library
 
 License:        LGPLv2+
@@ -12,6 +12,10 @@ BuildRequires:	compat-libpng-devel
 BuildRequires:	SDL-devel
 ## For ARM 64 support (RHBZ 926414)
 BuildRequires:	autoconf >= 2.69
+%if "%{_prefix}" != "/usr"
+BuildRequires: libbitcoin-prefix-setup-devel
+Requires:      libbitcoin-prefix-setup
+%endif
 
 %description
 Qrencode is a utility software using libqrencode to encode string data in
@@ -34,6 +38,10 @@ applications that use qrencode.
 
 
 %build
+%if 0%{?_btc_pkgconfig:1}%{!?_btc_pkgconfig:0}
+  PKG_CONFIG_PATH="%{_btc_pkgconfig}"
+  export PKG_CONFIG_PATH
+%endif
 ## Rebuild configure scripts for ARM 64 support. (RHBZ 926414)
 %{__autoconf}
 %configure --with-tests
@@ -47,8 +55,10 @@ chrpath --delete $RPM_BUILD_ROOT%{_bindir}/qrencode
 # don't package binary
 rm -f %{buildroot}%{_bindir}/qrencode
 rm -f %{buildroot}%{_mandir}/man1/qrencode.*
+%if "%{_prefix}" == "/usr"
 # don't package the .3 symlink
 rm -f %{buildroot}%{_libdir}/libqrencode.so.3
+%endif
 
 
 %check
@@ -65,7 +75,11 @@ sh test_all.sh
 %{!?_licensedir:%global license %%doc}
 %license COPYING
 %doc ChangeLog NEWS README TODO
+%if "%{_prefix}" != "/usr"
+%{_libdir}/libqrencode.so.*
+%else
 %{_libdir}/libqrencode.so.3.*
+%endif
 
 %files -n compat-qrencode-devel
 %{_includedir}/qrencode.h
@@ -74,6 +88,9 @@ sh test_all.sh
 
 
 %changelog
+* Fri Mar 03 2017 Alice Wonder <buildmaster@librelamp.com> - 3.4.4-1.1
+- Allow for custom %%{_prefix} at package build
+
 * Mon Feb 27 2017 Alice Wonder <buildmaster@librelamp.com> - 3.4.4-1
 - Rename to compat-qrencode-libs for CentOS 7 build
 - Only package the libs, not the binary

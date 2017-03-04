@@ -2,7 +2,7 @@
 
 Name:           compat-zeromq
 Version:        4.2.1
-Release:        1%{?dist}
+Release:        1%{?dist}.1
 Summary:        Software library for fast, message-based applications
 
 Group:          System Environment/Libraries
@@ -18,6 +18,10 @@ BuildRequires:  autoconf
 BuildRequires:  automake
 BuildRequires:  libtool
 BuildRequires:  libsodium-devel
+%if "%{_prefix}" != "/usr"
+BuildRequires: libbitcoin-prefix-setup-devel
+Requires:      libbitcoin-prefix-setup
+%endif
 
 BuildRequires:  glib2-devel
 %if ! (0%{?fedora} > 12 || 0%{?rhel} > 5)
@@ -77,12 +81,16 @@ sed -i "s/libzmq_werror=\"yes\"/libzmq_werror=\"no\"/g" \
     configure
 
 # Sed version number of openpgm into configure
-%global openpgm_pc $(basename %{_libdir}/pkgconfig/openpgm*.pc .pc)
+%global openpgm_pc $(basename %{_usr}/%{_lib}/pkgconfig/openpgm*.pc .pc)
 sed -i "s/openpgm-[0-9].[0-9]/%{openpgm_pc}/g" \
     configure*
 
 
 %build
+%if 0%{?_btc_pkgconfig:1}%{!?_btc_pkgconfig:0}
+  PKG_CONFIG_PATH="%{_btc_pkgconfig}"
+  export PKG_CONFIG_PATH
+%endif
 autoreconf -fi
 # Don't turn warnings into errors
 sed -i "s/libzmq_werror=\"yes\"/libzmq_werror=\"no\"/g" \
@@ -137,6 +145,10 @@ make check V=1
 
 
 %changelog
+* Fri Mar 03 2017 Alice Wonder <buildmaster@librelamp.com> - 4.2.1-1.1
+- Allow for building with a custom %%{_prefix}
+- Fix spec file bug that broke pkgconfig with custom %%{_prefix} (not my bug)
+
 * Tue Feb 28 2017 Alice Wonder <buildmaster@librelamp.com> - 4.2.1-1
 - Update to 4.2.1, build as compat package
 
