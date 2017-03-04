@@ -264,14 +264,28 @@ being investigated.
 
 ### libbitcoin4-blockchain.spec
 
-This id the libbitcoin blockchain library. Last build attempt, both the build
+This is the libbitcoin blockchain library. Last build attempt, both the build
 itself and `make check` were successful.
 
 The git project to use: [libbitcoin/libbitcoin-blockchain](https://github.com/libbitcoin/libbitcoin-blockchain)
 
 ### libbitcoin4-network.spec
 
-This id the libbitcoin network library. Last build attempt, both the build
+This is the libbitcoin network library. Last build attempt, both the build
 itself and `make check` were successful.
 
 The git project to use: [libbitcoin/libbitcoin-network](https://github.com/libbitcoin/libbitcoin-network)
+
+### libbitcoin4-node.spec
+
+This is the libbitcoin node library and binary. Last buils attempt, both the
+build itself and `make check` were successful.
+
+The git project to use: [libbitcoin/libbitcoin-node](https://github.com/libbitcoin/libbitcoin-node)
+
+### libbitcoin4-server.spec
+
+This is the libbitcoin server library and binary. Last buils attempt, both the
+build itself and `make check` were successful.
+
+The git project to use: [libbitcoin/libbitcoin-server](https://github.com/libbitcoin/libbitcoin-server)
