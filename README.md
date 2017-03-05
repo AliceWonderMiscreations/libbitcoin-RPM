@@ -102,12 +102,6 @@ However before you build any of the packages, you *must* first build the
 `libbitcoin-prefix-setup.spec` spec file using the same `%{_prefix}` you will
 be using to build the packages.
 
-That package creates a file in `/etc/ld.so.conf.d/` and sets up an RPM macro in
-`/lib/rpm/macros.d/` for making sure the `PKG_CONFIG_PATH` is sane.
-
-You only need to build that spec file if you are changing the install root for
-where the packages install.
-
 ## Compatibility Packages
 
 Several of the build dependencies for libbitcoin are newer than the versions of
@@ -195,7 +189,7 @@ prefix are picked up by the python interpreter without any fuss.
 It does not (yet) take Java class paths into account. It does not alter the
 default `MANPATH` to make any man pages available, but currently libbitcoin
 does not have any man pages. It does not alter the default `PATH` for bash or
-other shell environments. The would be easy to do (stick a file in `/etc/profile.d`)
+other shell environments. That would be easy to do (stick a file in `/etc/profile.d`)
 but I do not think it is necessary.
 
 ## libbitcoin-libsecp256k1.spec
