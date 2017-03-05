@@ -1,13 +1,13 @@
 Name:		libbitcoin4
 Version:	4.0.0
-%define gitdate 20170302
-Release:	0.git.%{gitdate}%{?dist}.2
+%define gitdate 20170305
+Release:	0.git.%{gitdate}%{?dist}.0
 Summary:	Bitcoin Cross-Platform C++ Development Toolkit
 
 Group:		LibBitcoin/Libraries
 License:	AGPLv3
 URL:		https://libbitcoin.org/
-Source0:	afa31fe2cf121418c3c21eb17acb0e42dfc414d0a6d50949456ea79dd882518d-libbitcoin-master.zip
+Source0:	33b9a2a225bc4db90669bef13890204864faa542ab313cfadb1fd36baeb747bf-libbitcoin-master.zip
 
 BuildRequires:	autoconf automake libtool
 BuildRequires:	libsecp256k1-devel >= 0.0.1
@@ -137,6 +137,9 @@ make check
 
 
 %changelog
+* Sun Mar 05 2017 Alice Wonder <buildmaster@librelamp.com> - 4.0.0-0.git.20170305.0
+- Update the git checkout
+
 * Fri Mar 03 2017 Alice Wonder <buildmaster@librelamp.com> - 4.0.0-0.git.20170302.2
 - Fix for defining an alternate %%_prefix at build time.
 - Optional macro for defining --with-boost and --with-boost-libdir configure option

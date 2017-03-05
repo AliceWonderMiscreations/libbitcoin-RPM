@@ -1,13 +1,13 @@
 Name:		libbitcoin4-protocol
 Version:	4.0.0
-%define gitdate 20170228
-Release:	0.git.%{gitdate}%{?dist}.2
+%define gitdate 20170305
+Release:	0.git.%{gitdate}%{?dist}.0
 Summary:	Bitcoin Blockchain Query Protocol
 
 Group:		LibBitcoin/Libraries
 License:	AGPLv3
 URL:		https://libbitcoin.org/
-Source0:	871fb7141d1f71ba3b26223e0b95c1c1b9883a82fc7a12d475def4577187ed1b-libbitcoin-protocol-master.zip
+Source0:	8ce264bbc6d7e43fbad227beda3afb826c759dd9c26c2a694447ad3994409a30-libbitcoin-protocol-master.zip
 
 BuildRequires:	autoconf automake libtool
 %if 0%{?rhel}
@@ -89,6 +89,9 @@ make check
 
 
 %changelog
+* Sun Mar 05 2017 Alice Wonder <buildmaster@librelamp.com> - 4.0.0-0.git.20170305.0
+- Update git checkout
+
 * Fri Mar 03 2017 Alice Wonder <buildmaster@librelamp.com> - 4.0.0-0.git.20170228.2
 - Fix for defining an alternate %%_prefix at build time.
 - Optional macro for defining --with-boost and --with-boost-libdir configure option
