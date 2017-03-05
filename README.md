@@ -308,11 +308,11 @@ The git project to use: [libbitcoin/libbitcoin-server](https://github.com/libbit
 
 ### libbitcoin4-client.spec
 
-The is the libbitcoin client library. Last build attempt failed. The log of the
-failed build attemt: [libbitcoin4-client.build.log.txt](./libbitcoin4-client.build.log.txt)
+The is the libbitcoin client library. Last build attempt, both the build itself
+and `make check` were successful.
 
 The git project to use: [libbitcoin/libbitcoin-client](https://github.com/libbitcoin/libbitcoin-client)
 
 ### libbitcoin4-explorer.spec
 
-I can not start work on that spec file until the client spec file works.
+I have not started work on that spec file yet.

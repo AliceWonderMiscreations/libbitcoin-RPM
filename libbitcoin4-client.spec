@@ -1,4 +1,3 @@
-## -- build fails -- ##
 Name:		libbitcoin4-client
 Version:	4.0.0
 %define gitdate 20170304
@@ -69,9 +68,16 @@ make check
 %defattr(-,root,root,-)
 %doc AUTHORS README.md
 %license COPYING
+%{_libdir}/lib*.so.*
 
 %files devel
 %defattr(-,root,root,-)
+%{_includedir}/bitcoin/client.hpp
+%dir %{_includedir}/bitcoin/client
+%{_includedir}/bitcoin/client/*.hpp
+%{_libdir}/libbitcoin-client.a
+%{_libdir}/libbitcoin-client.so
+%{_libdir}/pkgconfig/libbitcoin-client.pc
 
 
 
