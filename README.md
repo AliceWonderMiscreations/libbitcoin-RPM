@@ -176,6 +176,28 @@ You also will need to change the define `gitdate` macro in the RPM spec file to
 reflect the `YYYYMMDD` when you downloaded the zip archive. Do not forget to
 make a changelog entry reflecting the date you grabbed the zip archive.
 
+## libbitcoin-prefix-setup.spec
+This spec file does not use any source files. It creates some text files that
+are important to have if you are building the RPM packages with a custom
+install prefix, e.g. `/opt/libbitcoin`
+
+The spec file will not build without a custom install prefix as it is not
+needed if installing into `/usr` as your prefix (the default prefix on Red Hat
+based systems)
+
+It creates a configuration file in `/etc/ld.so.conf.d` so that the shared
+libraries are picked up when the `/sbin/ldconfig` command runs. It creates some
+custom RPM macro files within `/usr/lib/rpm/macros.d` that assist with the RPM
+build processes for packages installed in the custom prefix. It creates some
+python `.pth` files so that python components installed within the custom
+prefix are picked up by the python interpreter without any fuss.
+
+It does not (yet) take Java class paths into account. It does not alter the
+default `MANPATH` to make any man pages available, but currently libbitcoin
+does not have any man pages. It does not alter the default `PATH` for bash or
+other shell environments. The would be easy to do (stick a file in `/etc/profile.d`)
+but I do not think it is necessary.
+
 ## libbitcoin-libsecp256k1.spec
 
 secp256k1 is not part of the libbitcoin project, that library is actually from
@@ -289,3 +311,14 @@ This is the libbitcoin server library and binary. Last buils attempt, both the
 build itself and `make check` were successful.
 
 The git project to use: [libbitcoin/libbitcoin-server](https://github.com/libbitcoin/libbitcoin-server)
+
+### libbitcoin4-client.spec
+
+The is the libbitcoin client library. Last build attempt failed. The log of the
+failed build attemt: [libbitcoin4-client.build.log.txt](./libbitcoin4-client.build.log.txt)
+
+The git project to use: [libbitcoin/libbitcoin-client](https://github.com/libbitcoin/libbitcoin-client)
+
+### libbitcoin4-explorer.spec
+
+I can not start work on that spec file until the client spec file works.
