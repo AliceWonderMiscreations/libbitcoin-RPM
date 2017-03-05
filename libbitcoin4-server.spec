@@ -1,7 +1,7 @@
 Name:		libbitcoin4-server
 Version:	4.0.0
 %define gitdate 20170304
-Release:	0.git.%{gitdate}%{?dist}.0
+Release:	0.git.%{gitdate}%{?dist}.1
 Summary:	Bitcoin Full Node and Query Server
 
 Group:		LibBitcoin/Libraries
@@ -60,7 +60,7 @@ compile software that links against %{name}.
   PKG_CONFIG_PATH="%{btc_pkgconfig}"
   export PKG_CONFIG_PATH
 %endif
-%configure --with-bash-completiondir=%{_usr}/share/bash-completion/completions %{?_with_boost} %{?_boost_libdir}
+%configure --with-bash-completiondir=%{_sysconfdir}/bash_completion.d %{?_with_boost} %{?_boost_libdir}
 make %{?_smp_mflags}
 
 
@@ -85,7 +85,7 @@ make check
 %config(noreplace) %{_sysconfdir}/libbitcoin/bs.cfg
 %{_bindir}/bs
 %{_libdir}/lib*.so.*
-%{_usr}/share/bash-completion/completions/bs
+%{_sysconfdir}/bash_completion.d/bs
 
 %files devel
 %defattr(-,root,root,-)
@@ -108,5 +108,8 @@ make check
 
 
 %changelog
+* Sat Mar 04 2017 Alice Wonder <buildmaster@librelamp.com> - 4.0.0-0.git.20170304.1
+- Put bash completions in /etc/bash_completion.d
+
 * Sat Mar 04 2017 Alice Wonder <buildmaster@librelamp.com> - 4.0.0-0.git.20170304.0
 - Initial spec file
