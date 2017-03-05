@@ -84,7 +84,7 @@ EOF
 mkdir -p %{buildroot}%{_usr}/lib/rpm/macros.d
 cat <<EOF > %{buildroot}%{_usr}/lib/rpm/macros.d/macros.btcpkgconfig
 #Attempt to set sane pkgconfig path
-%%btc_pkgconfig %%{_libdir}/pkgconfig:%%{_usr}/%%{_lib}/pkgconfig:%%{_usr}/share/pkgconfig
+%%btc_pkgconfig %{_libdir}/pkgconfig:%{_usr}/%{_lib}/pkgconfig:%{_usr}/share/pkgconfig
 EOF
 
 cat <<EOF > %{buildroot}%{_usr}/lib/rpm/macros.d/macros.btcpython2
